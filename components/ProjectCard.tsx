@@ -60,15 +60,99 @@ const OmniaEngineLogo = () => (
   </svg>
 );
 
+// Logo para proyectos en producción
+const ProductionLogo = ({ icon }: { icon: string }) => {
+  const IconComponent = (Icons as any)[icon] || Icons.Zap;
+  
+  return (
+    <div className="relative">
+      <svg viewBox="0 0 120 120" className="w-24 h-24 md:w-32 md:h-32 drop-shadow-[0_0_30px_rgba(34,211,238,0.3)] group-hover:scale-110 transition-transform duration-700">
+        <defs>
+          <linearGradient id="prod-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#22d3ee" />
+            <stop offset="50%" stopColor="#3b82f6" />
+            <stop offset="100%" stopColor="#06b6d4" />
+          </linearGradient>
+          <filter id="prod-glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        
+        {/* Rotating rings */}
+        <circle 
+          cx="60" cy="60" r="45" 
+          fill="none" 
+          stroke="url(#prod-gradient)" 
+          strokeWidth="2" 
+          opacity="0.3"
+          strokeDasharray="10 5"
+          className="animate-[spin_15s_linear_infinite]"
+        />
+        <circle 
+          cx="60" cy="60" r="35" 
+          fill="none" 
+          stroke="url(#prod-gradient)" 
+          strokeWidth="1.5" 
+          opacity="0.4"
+          strokeDasharray="5 3"
+          className="animate-[spin_10s_linear_infinite_reverse]"
+        />
+        
+        {/* Central hexagon */}
+        <path 
+          d="M60 25 L85 42.5 L85 72.5 L60 90 L35 72.5 L35 42.5 Z" 
+          fill="#0f172a" 
+          stroke="url(#prod-gradient)" 
+          strokeWidth="2"
+          filter="url(#prod-glow)"
+        />
+        
+        {/* Inner glow */}
+        <circle cx="60" cy="60" r="18" fill="url(#prod-gradient)" opacity="0.2">
+          <animate attributeName="r" values="18;22;18" duration="2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.2;0.4;0.2" duration="2s" repeatCount="indefinite" />
+        </circle>
+        
+        {/* Corner dots */}
+        <circle cx="60" cy="22" r="3" fill="#22d3ee">
+          <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="88" cy="42" r="3" fill="#3b82f6">
+          <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" begin="0.3s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="88" cy="74" r="3" fill="#06b6d4">
+          <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" begin="0.6s" repeatCount="indefinite" />
+        </circle>
+      </svg>
+      
+      {/* Icon overlay */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="text-cyan-400 opacity-90 group-hover:scale-110 transition-transform duration-500">
+          <IconComponent size={40} strokeWidth={1.5} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   const [imgError, setImgError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const safeUrl = project.url.startsWith('http') ? project.url : `https://${project.url}`;
   
+  // Check if this is a production placeholder
+  const isProductionPlaceholder = project.image === 'production';
+  
   // Generates a screenshot automatically based on the URL.
   // We prioritize the screenshot service. If it fails, the onError handler will show the 'Under Construction' state.
-  const screenshotUrl = project.image || `https://s0.wp.com/mshots/v1/${encodeURIComponent(safeUrl)}?w=800&h=600`;
+  const screenshotUrl = !isProductionPlaceholder && project.image 
+    ? project.image 
+    : `https://s0.wp.com/mshots/v1/${encodeURIComponent(safeUrl)}?w=800&h=600`;
 
   // Dynamically resolve the icon component
   const IconComponent = project.icon ? (Icons as any)[project.icon] : null;
@@ -105,11 +189,35 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       {/* Content Area */}
       <div className="relative aspect-[16/10] w-full bg-slate-950 overflow-hidden">
         {/* Loading Skeleton */}
-        {isLoading && !imgError && (
+        {isLoading && !imgError && !isProductionPlaceholder && (
           <div className="absolute inset-0 bg-slate-900 animate-pulse z-0" />
         )}
         
-        {!imgError ? (
+        {isProductionPlaceholder ? (
+          /* Estado "En Producción" Elegante */
+          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-6 text-center relative overflow-hidden group-hover:from-slate-900/90 group-hover:via-slate-900/90 group-hover:to-slate-950/90 transition-colors">
+             {/* Background decorative pattern */}
+             <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_50%_50%,rgba(34,211,238,0.3),transparent_50%)]"></div>
+             <div className="absolute inset-0 opacity-10 bg-[linear-gradient(45deg,transparent_48%,rgba(34,211,238,0.1)_49%,rgba(34,211,238,0.1)_51%,transparent_52%)] bg-[length:20px_20px]"></div>
+             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/50"></div>
+             
+             {/* Production Logo */}
+             <div className="relative z-10 flex flex-col items-center animate-fade-in-up">
+               {project.icon && <ProductionLogo icon={project.icon} />}
+               
+               <div className="mt-6 space-y-2">
+                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyan-500/40 bg-cyan-500/10 backdrop-blur-md shadow-lg shadow-cyan-500/10">
+                   <span className="relative flex h-2 w-2">
+                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                     <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                   </span>
+                   <p className="text-cyan-400 text-[11px] font-bold uppercase tracking-[0.2em]">Live in Production</p>
+                 </div>
+                 <p className="text-slate-400 text-xs font-serif italic">Enterprise-Grade Solution</p>
+               </div>
+             </div>
+          </div>
+        ) : !imgError ? (
           <img
             src={screenshotUrl}
             alt={`Screenshot of ${project.name}`}
