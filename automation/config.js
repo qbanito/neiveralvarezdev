@@ -78,11 +78,11 @@ export const CONFIG = {
   
   // Data Files (stored in /data directory)
   DATA_FILES: {
-    LEADS: './data/leads.json',
-    CAMPAIGNS: './data/campaigns.json',
-    SENT: './data/sent.json',
-    ANALYTICS: './data/analytics.json',
-    UNSUBSCRIBED: './data/unsubscribed.json'
+    LEADS: '../data/leads.json',
+    CAMPAIGNS: '../data/campaigns.json',
+    SENT: '../data/sent.json',
+    ANALYTICS: '../data/analytics.json',
+    UNSUBSCRIBED: '../data/unsubscribed.json'
   },
   
   // Safety Limits
