@@ -253,73 +253,6 @@ function App() {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="relative py-32 bg-slate-900 overflow-hidden">
-        {/* Enhanced Background Effects */}
-        <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-cyan-500/10 rounded-full blur-[150px]" />
-        <div className="absolute bottom-0 left-0 w-[700px] h-[700px] bg-blue-600/10 rounded-full blur-[150px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-10"></div>
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-cyan-100 to-blue-200 bg-clip-text text-transparent font-serif">
-              Premium Services
-            </h2>
-            <p className="text-slate-400 text-xl max-w-3xl mx-auto leading-relaxed">
-              Elite digital solutions engineered for maximum impact and scalability
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {SERVICES.map((service) => {
-              const IconComponent = service.icon === 'Globe' ? Globe : service.icon === 'Building2' ? Building2 : Brain;
-              return (
-                <div 
-                  key={service.id}
-                  className={`relative group bg-gradient-to-br from-slate-950/95 to-slate-900/95 backdrop-blur-xl rounded-3xl p-8 border-2 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl overflow-hidden ${
-                    service.popular 
-                      ? 'border-cyan-500 shadow-lg shadow-cyan-500/30' 
-                      : 'border-slate-800 hover:border-cyan-500/30 hover:shadow-cyan-500/10'
-                  }`}
-                >
-                  {service.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full text-white text-xs font-bold">
-                      MOST POPULAR
-                    </div>
-                  )}
-                  
-                  <div className="w-14 h-14 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center mb-6 group-hover:bg-cyan-500/10 group-hover:border-cyan-500/50 transition-colors">
-                    <IconComponent size={28} className="text-cyan-400" />
-                  </div>
-                  
-                  <h3 className="text-2xl font-bold text-white mb-3 font-serif">{service.name}</h3>
-                  <p className="text-slate-400 mb-6 leading-relaxed">{service.description}</p>
-                  
-                  <ul className="space-y-3 mb-8">
-                    {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center gap-2 text-sm text-slate-300">
-                        <Check size={16} className="text-cyan-500 flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <div className="pt-6 border-t border-slate-800">
-                    <div className="text-2xl font-bold text-white mb-4">{service.price}</div>
-                    <a 
-                      href="#contact-form"
-                      className="block w-full py-3 px-6 text-center rounded-lg bg-slate-800 hover:bg-cyan-500 text-white font-semibold transition-colors"
-                    >
-                      Get Started
-                    </a>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Projects Section */}
       <section id="projects" className="relative py-32 bg-gradient-to-b from-slate-900 to-slate-950 overflow-hidden">
         {/* Animated Background */}
@@ -384,6 +317,73 @@ function App() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services Section - Pricing */}
+      <section id="services" className="relative py-32 bg-slate-950 overflow-hidden">
+        {/* Enhanced Background Effects */}
+        <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-cyan-500/10 rounded-full blur-[150px]" />
+        <div className="absolute bottom-0 left-0 w-[700px] h-[700px] bg-blue-600/10 rounded-full blur-[150px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-10"></div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-cyan-100 to-blue-200 bg-clip-text text-transparent font-serif">
+              Premium Services
+            </h2>
+            <p className="text-slate-400 text-xl max-w-3xl mx-auto leading-relaxed">
+              Elite digital solutions engineered for maximum impact and scalability
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {SERVICES.map((service) => {
+              const IconComponent = service.icon === 'Globe' ? Globe : service.icon === 'Building2' ? Building2 : Brain;
+              return (
+                <div 
+                  key={service.id}
+                  className={`relative group bg-gradient-to-br from-slate-950/95 to-slate-900/95 backdrop-blur-xl rounded-3xl p-8 border-2 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl overflow-hidden ${
+                    service.popular 
+                      ? 'border-cyan-500 shadow-lg shadow-cyan-500/30' 
+                      : 'border-slate-800 hover:border-cyan-500/30 hover:shadow-cyan-500/10'
+                  }`}
+                >
+                  {service.popular && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full text-white text-xs font-bold">
+                      MOST POPULAR
+                    </div>
+                  )}
+                  
+                  <div className="w-14 h-14 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center mb-6 group-hover:bg-cyan-500/10 group-hover:border-cyan-500/50 transition-colors">
+                    <IconComponent size={28} className="text-cyan-400" />
+                  </div>
+                  
+                  <h3 className="text-2xl font-bold text-white mb-3 font-serif">{service.name}</h3>
+                  <p className="text-slate-400 mb-6 leading-relaxed">{service.description}</p>
+                  
+                  <ul className="space-y-3 mb-8">
+                    {service.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-center gap-2 text-sm text-slate-300">
+                        <Check size={16} className="text-cyan-500 flex-shrink-0" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  <div className="pt-6 border-t border-slate-800">
+                    <div className="text-2xl font-bold text-white mb-4">{service.price}</div>
+                    <a 
+                      href="#contact-form"
+                      className="block w-full py-3 px-6 text-center rounded-lg bg-slate-800 hover:bg-cyan-500 text-white font-semibold transition-colors"
+                    >
+                      Get Started
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
