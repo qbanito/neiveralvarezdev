@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f9fafb;
+    }
+  </style>
+</head>
+<body>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f9fafb; padding: 25px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="560" style="background-color: #ffffff; border-radius: 8px;">
+          
+          <!-- Header -->
+          <tr>
+            <td style="padding: 30px 25px; border-bottom: 3px solid #3b82f6;">
+              <h2 style="margin: 0; color: #1f2937; font-size: 20px; font-weight: 600;">
+                {{opener}}
+              </h2>
+            </td>
+          </tr>
+          
+          <!-- Body -->
+          <tr>
+            <td style="padding: 30px 25px;">
+              
+              <p style="margin: 0 0 16px 0; color: #374151; font-size: 15px; line-height: 1.6;">
+                {{hook}}
+              </p>
+              
+              <p style="margin: 0 0 18px 0; color: #4b5563; font-size: 14px; line-height: 1.6;">
+                {{valueProposition}}
+              </p>
+              
+              <p style="margin: 0 0 22px 0; color: #4b5563; font-size: 14px;">
+                {{cta}}
+              </p>
+              
+              <!-- Simple CTA -->
+              <p style="margin: 0;">
+                <a href="mailto:neiver@neiveralvarez.dev?subject=Re: {{subject}}" style="color: #3b82f6; text-decoration: none; font-weight: 600;">
+                  → Reply to this email
+                </a>
+              </p>
+              
+              <!-- Signature -->
+              <div style="margin-top: 25px; padding-top: 18px; border-top: 1px solid #e5e7eb;">
+                <p style="margin: 0 0 4px 0; color: #1f2937; font-size: 14px; font-weight: 600;">
+                  Neiver Alvarez
+                </p>
+                <p style="margin: 0; color: #6b7280; font-size: 13px;">
+                  Full-Stack Developer
+                </p>
+              </div>
+              
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 15px 25px; text-align: center; background-color: #f9fafb; border-top: 1px solid #e5e7eb;">
+              <p style="margin: 0; color: #9ca3af; font-size: 11px;">
+                <a href="{{unsubscribeUrl}}" style="color: #9ca3af; text-decoration: underline;">Unsubscribe</a>
+              </p>
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

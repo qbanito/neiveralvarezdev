@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f3f4f6;
+    }
+  </style>
+</head>
+<body>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f3f4f6; padding: 30px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="background-color: #ffffff; border-radius: 10px;">
+          
+          <!-- Header -->
+          <tr>
+            <td style="padding: 30px;">
+              <h2 style="margin: 0 0 20px 0; color: #1f2937; font-size: 20px; font-weight: 600;">
+                Hey {{firstName}},
+              </h2>
+              
+              <p style="margin: 0 0 18px 0; color: #374151; font-size: 15px; line-height: 1.6;">
+                Following up on my previous email about {{subject}}.
+              </p>
+              
+              <!-- Value Add -->
+              <p style="margin: 0 0 20px 0; color: #4b5563; font-size: 15px; line-height: 1.6;">
+                {{valueAdd}}
+              </p>
+              
+              <!-- Resource Box -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 8px; margin-bottom: 20px;">
+                <tr>
+                  <td style="padding: 20px;">
+                    <h3 style="margin: 0 0 10px 0; color: #0c4a6e; font-size: 16px; font-weight: 600;">
+                      📚 {{resource}}
+                    </h3>
+                    <p style="margin: 0; color: #075985; font-size: 14px; line-height: 1.5;">
+                      {{caseStudyBrief}}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+              
+              <p style="margin: 0 0 22px 0; color: #4b5563; font-size: 15px;">
+                {{cta}}
+              </p>
+              
+              <!-- CTA Button -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td>
+                    <a href="mailto:neiver@neiveralvarez.dev?subject=Re: {{subject}}" style="display: inline-block; background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); color: #ffffff; text-decoration: none; padding: 12px 26px; border-radius: 6px; font-size: 14px; font-weight: 600;">
+                      View Full Case Study
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              
+              <!-- Signature -->
+              <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                <p style="margin: 0 0 5px 0; color: #1f2937; font-size: 14px; font-weight: 600;">
+                  Neiver Alvarez
+                </p>
+                <p style="margin: 0; color: #6b7280; font-size: 13px;">
+                  Full-Stack Developer • <a href="https://neiveralvarez.dev" style="color: #3b82f6; text-decoration: none;">Portfolio</a>
+                </p>
+              </div>
+              
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="background-color: #f9fafb; padding: 20px; text-align: center; border-top: 1px solid #e5e7eb;">
+              <p style="margin: 0; color: #9ca3af; font-size: 11px;">
+                <a href="{{unsubscribeUrl}}" style="color: #9ca3af; text-decoration: underline;">Unsubscribe</a>
+              </p>
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

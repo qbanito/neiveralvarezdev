@@ -1,0 +1,4 @@
+# Data directory for outreach automation
+# Contains JSON databases for leads, sent emails, analytics, and unsubscribed list
+
+*.json

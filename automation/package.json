@@ -1,0 +1,16 @@
+{
+  "name": "outreach-automation",
+  "version": "1.0.0",
+  "description": "Intelligent email outreach automation system",
+  "type": "module",
+  "scripts": {
+    "fetch": "node apify-fetcher.js",
+    "send": "node sender.js",
+    "analytics": "node analytics.js",
+    "test": "node apify-fetcher.js && node sender.js"
+  },
+  "dependencies": {
+    "apify-client": "^2.8.0",
+    "resend": "^3.0.0"
+  }
+}

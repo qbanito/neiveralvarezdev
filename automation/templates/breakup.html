@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f9fafb;
+    }
+  </style>
+</head>
+<body>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f9fafb; padding: 25px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="540" style="background-color: #ffffff; border-radius: 8px;">
+          
+          <!-- Body -->
+          <tr>
+            <td style="padding: 28px;">
+              
+              <h2 style="margin: 0 0 16px 0; color: #1f2937; font-size: 18px; font-weight: 600;">
+                {{firstName}}, last email (promise)
+              </h2>
+              
+              <p style="margin: 0 0 16px 0; color: #374151; font-size: 15px; line-height: 1.6;">
+                I've reached out a few times about potentially working together, but haven't heard back.
+              </p>
+              
+              <p style="margin: 0 0 16px 0; color: #4b5563; font-size: 14px; line-height: 1.6;">
+                That's totally fine! I know inboxes get busy. I just want to make sure:
+              </p>
+              
+              <!-- Options Box -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #fef2f2; border-left: 4px solid #ef4444; border-radius: 6px; margin-bottom: 16px;">
+                <tr>
+                  <td style="padding: 16px;">
+                    <p style="margin: 0 0 8px 0; color: #991b1b; font-size: 14px;">
+                      ❌ Not interested → <a href="{{unsubscribeUrl}}" style="color: #991b1b; text-decoration: underline;">Click here</a> and I'll remove you
+                    </p>
+                    <p style="margin: 0 0 8px 0; color: #15803d; font-size: 14px;">
+                      ✅ Interested → Just reply to this email
+                    </p>
+                    <p style="margin: 0; color: #9ca3af; font-size: 14px;">
+                      ⏰ Bad timing → {{finalOffer}}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+              
+              <p style="margin: 0 0 20px 0; color: #4b5563; font-size: 14px; line-height: 1.6;">
+                Either way, thanks for your time and best of luck with {{company}}!
+              </p>
+              
+              <!-- Signature -->
+              <div style="padding-top: 16px; border-top: 1px solid #e5e7eb;">
+                <p style="margin: 0 0 4px 0; color: #1f2937; font-size: 14px; font-weight: 600;">
+                  Neiver Alvarez
+                </p>
+                <p style="margin: 0; color: #6b7280; font-size: 13px;">
+                  Full-Stack Developer • <a href="https://neiveralvarez.dev" style="color: #3b82f6; text-decoration: none;">neiveralvarez.dev</a>
+                </p>
+              </div>
+              
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="background-color: #f9fafb; padding: 15px; text-align: center; border-top: 1px solid #e5e7eb;">
+              <p style="margin: 0; color: #9ca3af; font-size: 11px;">
+                <a href="{{unsubscribeUrl}}" style="color: #9ca3af; text-decoration: underline;">Unsubscribe</a>
+              </p>
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

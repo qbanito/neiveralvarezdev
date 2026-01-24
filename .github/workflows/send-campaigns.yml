@@ -1,0 +1,42 @@
+name: Smart Campaign Sender
+on:
+  schedule:
+    # Run 3 times per day: 9 AM, 1 PM, 5 PM UTC
+    - cron: '0 9 * * 1-5'   # 9 AM Mon-Fri
+    - cron: '0 13 * * 1-5'  # 1 PM Mon-Fri
+    - cron: '0 17 * * 1-5'  # 5 PM Mon-Fri
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  send-campaigns:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        run: |
+          cd automation
+          npm install resend
+          
+      - name: Send campaign emails
+        env:
+          APIFY_API_KEY: ${{ secrets.APIFY_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          cd automation
+          node sender.js
+          
+      - name: Commit send logs
+        run: |
+          git config --local user.email "automation@neiveralvarez.dev"
+          git config --local user.name "Campaign Automation"
+          git add data/
+          git diff --quiet && git diff --staged --quiet || git commit -m "📧 Campaign send log - $(date +'%Y-%m-%d %H:%M')"
+          git push || echo "No changes to push"

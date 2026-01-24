@@ -1,0 +1,40 @@
+name: Daily Lead Fetcher
+on:
+  schedule:
+    # Run every day at 6 AM UTC (adjust for your timezone)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  fetch-leads:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        run: |
+          cd automation
+          npm install apify-client
+          
+      - name: Fetch leads from Apify
+        env:
+          APIFY_API_KEY: ${{ secrets.APIFY_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          cd automation
+          node apify-fetcher.js
+          
+      - name: Commit updated leads
+        run: |
+          git config --local user.email "automation@neiveralvarez.dev"
+          git config --local user.name "Lead Automation"
+          git add data/
+          git diff --quiet && git diff --staged --quiet || git commit -m "🔄 Update leads database - $(date +'%Y-%m-%d')"
+          git push || echo "No changes to push"
