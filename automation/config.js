@@ -9,10 +9,10 @@ export const CONFIG = {
   RESEND_API_KEY: process.env.RESEND_API_KEY,
   
   // Email Configuration
-  FROM_EMAIL: 'neiver@neiveralvarez.dev',
+  FROM_EMAIL: 'info@neiveralvarez.site',
   FROM_NAME: 'Neiver Alvarez',
   FORWARD_TO: 'convoycubano@gmail.com',
-  REPLY_TO: 'neiver@neiveralvarez.dev',
+  REPLY_TO: 'info@neiveralvarez.site',
   
   // Rate Limiting (Domain Protection)
   RATE_LIMITS: {
