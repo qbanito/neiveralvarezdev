@@ -1,5 +1,86 @@
 {
-  "sent": [],
-  "todaySent": 0,
-  "lastReset": null
+  "sent": [
+    {
+      "leadId": "lead_1769294705280_2c2hde1xh",
+      "email": "james.jack@ubs.com",
+      "sentAt": "2026-01-26T15:00:39.176Z",
+      "templateType": "initial",
+      "tier": 1,
+      "subject": "quick question"
+    },
+    {
+      "leadId": "lead_1769294705281_hog6324oj",
+      "email": "khowell@professionalpt.com",
+      "sentAt": "2026-01-26T15:00:41.921Z",
+      "templateType": "initial",
+      "tier": 1,
+      "subject": "your company's conversions"
+    },
+    {
+      "leadId": "lead_1769294705281_yuupw5haa",
+      "email": "john@greenchemindustries.com",
+      "sentAt": "2026-01-26T15:00:44.111Z",
+      "templateType": "initial",
+      "tier": 1,
+      "subject": "John — digital revenue"
+    },
+    {
+      "leadId": "lead_1769294705281_k0kseic61",
+      "email": "ariyelle.brown@tendertouch.com",
+      "sentAt": "2026-01-26T15:00:46.372Z",
+      "templateType": "initial",
+      "tier": 1,
+      "subject": "quick question"
+    },
+    {
+      "leadId": "lead_1769294705281_lnjcx3qiy",
+      "email": "tim.pryde@dolby.com",
+      "sentAt": "2026-01-26T15:00:48.537Z",
+      "templateType": "initial",
+      "tier": 1,
+      "subject": "Tim — digital revenue"
+    },
+    {
+      "leadId": "lead_1769294705281_xx6j5cynk",
+      "email": "seungbum.yoo@tlcsolutions.ca",
+      "sentAt": "2026-01-26T15:00:50.695Z",
+      "templateType": "initial",
+      "tier": 1,
+      "subject": "quick question"
+    },
+    {
+      "leadId": "lead_1769294705281_lwonq9ql2",
+      "email": "stacie.hudgens@clinoutsolutions.com",
+      "sentAt": "2026-01-26T15:00:52.817Z",
+      "templateType": "initial",
+      "tier": 1,
+      "subject": "your company + revenue"
+    },
+    {
+      "leadId": "lead_1769294705281_z9laywjew",
+      "email": "drwong@sevneurology.com",
+      "sentAt": "2026-01-26T15:00:54.967Z",
+      "templateType": "initial",
+      "tier": 1,
+      "subject": "your company + revenue"
+    },
+    {
+      "leadId": "lead_1769294705281_908de85j4",
+      "email": "smiller@fusion-etc.com",
+      "sentAt": "2026-01-26T15:00:57.097Z",
+      "templateType": "initial",
+      "tier": 1,
+      "subject": "Smiller — digital revenue"
+    },
+    {
+      "leadId": "lead_1769294705281_pc9rq78io",
+      "email": "mschmidt@educatedsolutionscorp.com",
+      "sentAt": "2026-01-26T15:00:59.236Z",
+      "templateType": "initial",
+      "tier": 1,
+      "subject": "your company + revenue"
+    }
+  ],
+  "todaySent": 10,
+  "lastReset": "2026-01-26"
 }

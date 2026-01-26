@@ -74,9 +74,9 @@
       "industry": "Financial Services",
       "tier": 1,
       "status": "pending",
-      "sequence_step": 0,
-      "last_contact": null,
-      "next_contact": "2026-01-24",
+      "sequence_step": 1,
+      "last_contact": "2026-01-26",
+      "next_contact": "2026-01-29",
       "tags": [
         "financial services"
       ],
@@ -242,9 +242,9 @@
       "industry": "Health, Wellness & Fitness",
       "tier": 1,
       "status": "pending",
-      "sequence_step": 0,
-      "last_contact": null,
-      "next_contact": "2026-01-24",
+      "sequence_step": 1,
+      "last_contact": "2026-01-26",
+      "next_contact": "2026-01-29",
       "tags": [
         "health, wellness & fitness",
         "founder"
@@ -285,9 +285,9 @@
       "industry": "Chemicals",
       "tier": 1,
       "status": "pending",
-      "sequence_step": 0,
-      "last_contact": null,
-      "next_contact": "2026-01-24",
+      "sequence_step": 1,
+      "last_contact": "2026-01-26",
+      "next_contact": "2026-01-29",
       "tags": [
         "chemicals"
       ],
@@ -453,9 +453,9 @@
       "industry": "Hospital & Health Care",
       "tier": 1,
       "status": "pending",
-      "sequence_step": 0,
-      "last_contact": null,
-      "next_contact": "2026-01-24",
+      "sequence_step": 1,
+      "last_contact": "2026-01-26",
+      "next_contact": "2026-01-29",
       "tags": [
         "hospital & health care",
         "founder"
@@ -517,9 +517,9 @@
       "industry": "Electrical/electronic Manufacturing",
       "tier": 1,
       "status": "pending",
-      "sequence_step": 0,
-      "last_contact": null,
-      "next_contact": "2026-01-24",
+      "sequence_step": 1,
+      "last_contact": "2026-01-26",
+      "next_contact": "2026-01-29",
       "tags": [
         "electrical/electronic manufacturing"
       ],
@@ -580,9 +580,9 @@
       "industry": "Information Technology & Services",
       "tier": 1,
       "status": "pending",
-      "sequence_step": 0,
-      "last_contact": null,
-      "next_contact": "2026-01-24",
+      "sequence_step": 1,
+      "last_contact": "2026-01-26",
+      "next_contact": "2026-01-29",
       "tags": [
         "information technology & services",
         "founder"
@@ -602,9 +602,9 @@
       "industry": "Research",
       "tier": 1,
       "status": "pending",
-      "sequence_step": 0,
-      "last_contact": null,
-      "next_contact": "2026-01-24",
+      "sequence_step": 1,
+      "last_contact": "2026-01-26",
+      "next_contact": "2026-01-29",
       "tags": [
         "research"
       ],
@@ -686,9 +686,9 @@
       "industry": "Veterinary",
       "tier": 1,
       "status": "pending",
-      "sequence_step": 0,
-      "last_contact": null,
-      "next_contact": "2026-01-24",
+      "sequence_step": 1,
+      "last_contact": "2026-01-26",
+      "next_contact": "2026-01-29",
       "tags": [
         "veterinary",
         "founder"
@@ -750,9 +750,9 @@
       "industry": "Machinery",
       "tier": 1,
       "status": "pending",
-      "sequence_step": 0,
-      "last_contact": null,
-      "next_contact": "2026-01-24",
+      "sequence_step": 1,
+      "last_contact": "2026-01-26",
+      "next_contact": "2026-01-29",
       "tags": [
         "machinery"
       ],
@@ -855,9 +855,9 @@
       "industry": "Staffing & Recruiting",
       "tier": 1,
       "status": "pending",
-      "sequence_step": 0,
-      "last_contact": null,
-      "next_contact": "2026-01-24",
+      "sequence_step": 1,
+      "last_contact": "2026-01-26",
+      "next_contact": "2026-01-29",
       "tags": [
         "staffing & recruiting"
       ],
