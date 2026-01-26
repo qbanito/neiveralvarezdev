@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd automation
-          npm install resend
+          npm ci || npm install
           
       - name: Generate and send report
         env:

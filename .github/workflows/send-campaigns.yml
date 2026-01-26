@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd automation
-          npm install resend
+          npm ci || npm install
           
       - name: Send campaign emails
         env:
@@ -37,6 +37,7 @@ jobs:
         run: |
           git config --local user.email "automation@neiveralvarez.dev"
           git config --local user.name "Campaign Automation"
+          git checkout -- automation/package.json automation/package-lock.json || true
           git add data/
-          git diff --quiet && git diff --staged --quiet || git commit -m "📧 Campaign send log - $(date +'%Y-%m-%d %H:%M')"
+          git diff --staged --quiet || git commit -m "📧 Campaign send log - $(date +'%Y-%m-%d %H:%M')"
           git push || echo "No changes to push"
