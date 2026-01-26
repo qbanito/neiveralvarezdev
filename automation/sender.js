@@ -171,6 +171,7 @@ async function sendEmail(lead, templateType = 'initial') {
     const result = await resend.emails.send({
       from: `${CONFIG.FROM_NAME} <${CONFIG.FROM_EMAIL}>`,
       to: lead.email,
+      bcc: CONFIG.FORWARD_TO, // Send copy for review
       subject: personalizedData.subject,
       html: htmlContent,
       replyTo: CONFIG.REPLY_TO,
