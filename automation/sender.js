@@ -127,10 +127,26 @@ async function getLeadsToSend(limit) {
   const leadsData = await loadData(CONFIG.DATA_FILES.LEADS);
   const today = new Date().toISOString().split('T')[0];
   
+  console.log(`📅 Today's date: ${today}`);
+  console.log(`📊 Total leads in database: ${leadsData.leads?.length || 0}`);
+  
+  if (!leadsData.leads || leadsData.leads.length === 0) {
+    console.log('⚠️ No leads found in database');
+    return [];
+  }
+  
+  // Debug first few leads
+  console.log('🔍 Sample lead statuses:');
+  leadsData.leads.slice(0, 5).forEach(l => {
+    console.log(`   - ${l.email}: status=${l.status}, next_contact=${l.next_contact}, eligible=${l.status === 'pending' && l.next_contact <= today}`);
+  });
+  
   const readyLeads = leadsData.leads.filter(lead => {
     return lead.status === 'pending' &&
            lead.next_contact <= today;
   });
+  
+  console.log(`✅ Found ${readyLeads.length} leads with status=pending and next_contact <= ${today}`);
   
   // Sort by tier (tier 1 first) and then by date added
   readyLeads.sort((a, b) => {
