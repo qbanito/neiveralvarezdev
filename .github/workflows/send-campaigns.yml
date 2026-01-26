@@ -37,6 +37,6 @@ jobs:
         run: |
           git config --local user.email "automation@neiveralvarez.dev"
           git config --local user.name "Campaign Automation"
-          git add data/
+          git add data/ automation/package.json automation/package-lock.json
           git diff --quiet && git diff --staged --quiet || git commit -m "📧 Campaign send log - $(date +'%Y-%m-%d %H:%M')"
           git push || echo "No changes to push"
