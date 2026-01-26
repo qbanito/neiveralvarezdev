@@ -148,11 +148,10 @@ export const PROJECTS: Project[] = [
   },
   { 
     id: '13', 
-    name: 'Auto Leads X', 
-    url: 'https://autoleadsx.com',
-    description: 'Automotive CRM integrating with dealer inventory feeds via XML/JSON APIs. Streamlines customer follow-ups and test drive scheduling.',
-    icon: 'CarFront',
-    image: 'production'
+    name: 'AutoLeadsX', 
+    url: 'https://autoleadsx.netlify.app/',
+    description: 'AI-powered marketing automation platform with 24/7 sales agents, lead generation, chatbots, email sequences, and ad optimization for business growth.',
+    icon: 'Bot'
   },
   { 
     id: '14', 
@@ -163,19 +162,39 @@ export const PROJECTS: Project[] = [
   },
   { 
     id: '15', 
-    name: 'Lux Authentica', 
-    url: 'https://luxauthentica.com',
-    description: 'Web3 verification platform using Ethereum smart contracts (Solidity) to authenticate luxury goods and generate digital twins.',
-    icon: 'Gem',
-    image: 'production'
+    name: 'LuxWatch Authenticator', 
+    url: 'https://luxwatch.site',
+    description: 'AI-powered luxury watch authentication platform featuring 3D visualization, real-time market analysis, and blockchain-verified certificates for collectors.',
+    icon: 'Watch'
   },
   { 
     id: '16', 
-    name: 'TikSale AI', 
-    url: 'https://tiksaleai.com',
-    description: 'Social commerce analytics tool powered by predictive AI models. Scrapes and analyzes trend data to optimize ad spend ROI.',
-    icon: 'Bot',
+    name: 'NanoCam Space', 
+    url: 'https://nanocam.space',
+    description: 'AI-powered mobile camera app featuring cinematic filters, real-time video generation, and magical photo editing powered by advanced machine learning.',
+    icon: 'Camera',
     image: 'production'
+  },
+  { 
+    id: '17', 
+    name: 'Hotmart Growth Engine', 
+    url: 'https://hotmart-growth-engine.netlify.app/',
+    description: 'Autonomous AI agent powered by Gemini that analyzes products, strategizes marketing funnels, and builds optimized Hotmart sales machines in seconds.',
+    icon: 'Rocket'
+  },
+  { 
+    id: '18', 
+    name: 'TikSell AI', 
+    url: 'https://tiksell-ai-app.netlify.app/',
+    description: 'Viral commerce automation engine that generates TikTok content strategies, daily video scripts, and product marketing campaigns powered by AI.',
+    icon: 'Clapperboard'
+  },
+  { 
+    id: '19', 
+    name: 'Acquisition Engine', 
+    url: 'https://neiver-acquisition-engine.netlify.app/',
+    description: 'Auto client acquisition platform featuring Clerk authentication, client portal, checkout system, and contract management for scalable business growth.',
+    icon: 'Target'
   },
 ];
 

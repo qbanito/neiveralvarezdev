@@ -3,8 +3,13 @@
 
 import { Resend } from 'resend';
 import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { CONFIG, getCurrentDailyLimit, isWithinSendingHours } from './config.js';
 import { personalizeLead } from './email-personalizer.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const resend = new Resend(CONFIG.RESEND_API_KEY);
 
@@ -36,7 +41,7 @@ async function getTemplate(tier, templateType) {
     filename = `${templateType}.html`;
   }
   
-  const templatePath = `./automation/templates/${filename}`;
+  const templatePath = path.resolve(__dirname, 'templates', filename);
   const template = await fs.readFile(templatePath, 'utf-8');
   return template;
 }
@@ -243,10 +248,16 @@ function getTemplateType(step, isResurrection) {
 export async function sendCampaigns() {
   console.log('🚀 Starting smart email sender...\n');
   
-  // Check if within sending hours
-  if (!isWithinSendingHours()) {
+  // Check if within sending hours (skip if FORCE_SEND is set)
+  const forceSend = process.env.FORCE_SEND === 'true';
+  if (!forceSend && !isWithinSendingHours()) {
     console.log('⏰ Outside sending hours (Mon-Fri, 9am-5pm). Skipping.');
+    console.log('💡 Tip: Set FORCE_SEND=true to override');
     return;
+  }
+  
+  if (forceSend) {
+    console.log('⚡ FORCE_SEND enabled - bypassing time restrictions');
   }
   
   // Check daily limit
@@ -311,8 +322,6 @@ export async function sendCampaigns() {
 }
 
 // Run if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  sendCampaigns().catch(console.error);
-}
+sendCampaigns().catch(console.error);
 
 export default { sendCampaigns };

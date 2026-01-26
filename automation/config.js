@@ -1,6 +1,12 @@
 // ⚙️ AUTOMATION CONFIGURATION
 // Main configuration file for the intelligent email outreach system
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 export const CONFIG = {
   // API Keys (stored in GitHub Secrets)
   APIFY_API_KEY: process.env.APIFY_API_KEY,
@@ -78,11 +84,11 @@ export const CONFIG = {
   
   // Data Files (stored in /data directory)
   DATA_FILES: {
-    LEADS: '../data/leads.json',
-    CAMPAIGNS: '../data/campaigns.json',
-    SENT: '../data/sent.json',
-    ANALYTICS: '../data/analytics.json',
-    UNSUBSCRIBED: '../data/unsubscribed.json'
+    LEADS: path.resolve(__dirname, '../data/leads.json'),
+    CAMPAIGNS: path.resolve(__dirname, '../data/campaigns.json'),
+    SENT: path.resolve(__dirname, '../data/sent.json'),
+    ANALYTICS: path.resolve(__dirname, '../data/analytics.json'),
+    UNSUBSCRIBED: path.resolve(__dirname, '../data/unsubscribed.json')
   },
   
   // Safety Limits

@@ -7,6 +7,9 @@ on:
     - cron: '0 17 * * 1-5'  # 5 PM Mon-Fri
   workflow_dispatch: # Allow manual trigger
 
+permissions:
+  contents: write
+
 jobs:
   send-campaigns:
     runs-on: ubuntu-latest
@@ -14,6 +17,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -29,8 +34,11 @@ jobs:
         env:
           APIFY_API_KEY: ${{ secrets.APIFY_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          FORCE_SEND: 'true'
         run: |
           cd automation
+          echo "📊 Checking leads..."
+          node -e "import('./config.js').then(c => console.log('Config loaded:', Object.keys(c.CONFIG)))"
           node sender.js
           
       - name: Commit send logs
