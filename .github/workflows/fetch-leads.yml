@@ -17,18 +17,35 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-        
+      
+      - name: Check if new leads are needed
+        id: check-leads
+        run: |
+          PENDING=$(node -e "const d=require('./data/leads.json'); console.log(d.leads.filter(l=>l.status==='pending').length)")
+          echo "pending=$PENDING" >> $GITHUB_OUTPUT
+          echo "📊 Pending leads: $PENDING"
+          if [ "$PENDING" -lt 50 ]; then
+            echo "needs_leads=true" >> $GITHUB_OUTPUT
+            echo "⚠️ Below threshold (50) - will fetch new leads"
+          else
+            echo "needs_leads=false" >> $GITHUB_OUTPUT
+            echo "✅ Sufficient leads - skipping fetch"
+          fi
+      
       - name: Setup Node.js
+        if: steps.check-leads.outputs.needs_leads == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           
       - name: Install dependencies
+        if: steps.check-leads.outputs.needs_leads == 'true'
         run: |
           cd automation
           npm ci || npm install
           
       - name: Fetch leads from Apify
+        if: steps.check-leads.outputs.needs_leads == 'true'
         env:
           APIFY_API_KEY: ${{ secrets.APIFY_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -37,6 +54,7 @@ jobs:
           node apify-fetcher.js
           
       - name: Commit updated leads
+        if: steps.check-leads.outputs.needs_leads == 'true'
         run: |
           git config --local user.email "automation@neiveralvarez.dev"
           git config --local user.name "Lead Automation"
