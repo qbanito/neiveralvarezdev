@@ -18,7 +18,7 @@ export const CONFIG = {
   FROM_EMAIL: 'info@neiveralvarez.site',
   FROM_NAME: 'Neiver Alvarez',
   FORWARD_TO: 'convoycubano@gmail.com',
-  REPLY_TO: 'convoycubano@gmail.com',
+  REPLY_TO: ['info@neiveralvarez.site', 'convoycubano@gmail.com'],
   
   // Rate Limiting (Domain Protection)
   RATE_LIMITS: {
