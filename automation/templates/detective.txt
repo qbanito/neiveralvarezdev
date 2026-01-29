@@ -1,0 +1,11 @@
+Hey {{firstName}},
+
+{{hook}}
+
+{{problemStatement}}
+
+Si quieres, te mando un análisis rápido de qué cambiaría. Sin costo, me sirve para mi portafolio.
+
+¿Te interesa?
+
+Neiver

@@ -1,0 +1,9 @@
+{{firstName}},
+
+Armé un prototipo pensando en {{company}}:
+
+{{demoUrl}}
+
+Lo hice para mi portafolio basándome en lo que vi en su sitio. Si te sirve de algo, genial. Sin compromiso.
+
+Neiver

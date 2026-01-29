@@ -34,11 +34,13 @@ jobs:
         env:
           APIFY_API_KEY: ${{ secrets.APIFY_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           FORCE_SEND: 'true'
         run: |
           cd automation
           echo "📊 Checking leads..."
           node -e "import('./config.js').then(c => console.log('Config loaded:', Object.keys(c.CONFIG)))"
+          echo "🤖 AI Personalization enabled"
           node sender.js
           
       - name: Commit send logs

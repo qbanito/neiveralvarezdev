@@ -1,0 +1,10 @@
+{{firstName}},
+
+Entiendo que no es el momento. Ningún problema.
+
+Si en algún punto necesitas ayuda con {{industryTopic}}, aquí estaré.
+
+Mucho éxito con todo.
+
+Neiver
+neiveralvarez.site

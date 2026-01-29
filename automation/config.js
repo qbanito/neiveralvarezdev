@@ -13,12 +13,21 @@ export const CONFIG = {
   APIFY_DATASET_ID: 'Yb5WnpF2LgG4V4vvH',
   APIFY_ACTOR_ID: 'code_crafter/leads-finder',
   RESEND_API_KEY: process.env.RESEND_API_KEY,
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+  
+  // OpenAI Configuration
+  OPENAI: {
+    MODEL: 'gpt-4',
+    TEMPERATURE: 0.9,
+    MAX_TOKENS: 200,
+    ENABLE_AI_PERSONALIZATION: true
+  },
   
   // Email Configuration
   FROM_EMAIL: 'info@neiveralvarez.site',
   FROM_NAME: 'Neiver Alvarez',
   FORWARD_TO: 'convoycubano@gmail.com',
-  REPLY_TO: ['info@neiveralvarez.site', 'convoycubano@gmail.com'],
+  REPLY_TO: 'convoycubano@gmail.com', // Replies go directly to Gmail
   
   // Rate Limiting (Domain Protection)
   RATE_LIMITS: {
@@ -38,25 +47,42 @@ export const CONFIG = {
   },
   SENDING_DAYS: [1, 2, 3, 4, 5], // Monday-Friday
   
-  // Campaign Sequences
+  // Campaign Sequences - Nueva secuencia "El Consultor Amigo"
   SEQUENCES: {
-    INITIAL: {
+    DETECTIVE: {
       delay: 0,
-      template: 'initial'
+      template: 'detective',
+      description: 'Menciono problema específico detectado'
     },
-    FOLLOW_UP_1: {
-      delay: 3, // days after initial
-      template: 'follow-up-1'
+    RESOURCE: {
+      delay: 3, // días después del inicial
+      template: 'resource',
+      description: 'Comparto algo útil gratis'
     },
-    FOLLOW_UP_2: {
-      delay: 7, // days after initial
-      template: 'follow-up-2'
+    DEMO: {
+      delay: 7, // días después del inicial
+      template: 'demo',
+      description: 'Link a demo relevante'
     },
-    BREAKUP: {
-      delay: 14, // days after initial
-      template: 'breakup'
+    CASE: {
+      delay: 11, // días después del inicial
+      template: 'case',
+      description: 'Historia de cliente similar'
+    },
+    QUESTION: {
+      delay: 15, // días después del inicial
+      template: 'question',
+      description: 'Una pregunta directa'
+    },
+    FRIEND: {
+      delay: 21, // días después del inicial
+      template: 'friend',
+      description: 'Despedida casual sin venta'
     }
   },
+  
+  // Mapeo de secuencia para compatibilidad
+  SEQUENCE_ORDER: ['detective', 'resource', 'demo', 'case', 'question', 'friend'],
   
   // Lead Scoring Criteria
   SCORING: {
@@ -112,21 +138,51 @@ export const CONFIG = {
       name: 'E-commerce Platform',
       tech: ['React', 'Node.js', 'Stripe'],
       industry: ['E-commerce', 'Retail'],
-      description: 'Full-stack e-commerce with payment integration'
+      description: 'Full-stack e-commerce with payment integration',
+      demoUrl: 'https://demo.neiveralvarez.site/ecommerce'
     },
     {
       name: 'SaaS Dashboard',
       tech: ['React', 'TypeScript', 'Tailwind'],
       industry: ['SaaS', 'Technology'],
-      description: 'Enterprise-grade analytics dashboard'
+      description: 'Enterprise-grade analytics dashboard',
+      demoUrl: 'https://demo.neiveralvarez.site/saas'
     },
     {
       name: 'Real Estate Platform',
       tech: ['Next.js', 'PostgreSQL', 'Maps API'],
       industry: ['Real Estate', 'PropTech'],
-      description: 'Property listing with advanced search'
+      description: 'Property listing with advanced search',
+      demoUrl: 'https://demo.neiveralvarez.site/realestate'
+    },
+    {
+      name: 'Booking System',
+      tech: ['React', 'Node.js', 'Calendar API'],
+      industry: ['Services', 'Healthcare', 'Fitness'],
+      description: 'Smart appointment scheduling',
+      demoUrl: 'https://demo.neiveralvarez.site/booking'
+    },
+    {
+      name: 'ROI Calculator',
+      tech: ['React', 'TypeScript'],
+      industry: ['default'],
+      description: 'Interactive ROI projection tool',
+      demoUrl: 'https://demo.neiveralvarez.site/roi'
     }
   ],
+  
+  // Demos por industria
+  DEMOS: {
+    'E-commerce': 'https://neiveralvarez.site/demo',
+    'Retail': 'https://neiveralvarez.site/demo',
+    'SaaS': 'https://neiveralvarez.site/demo',
+    'Technology': 'https://neiveralvarez.site/demo',
+    'Real Estate': 'https://neiveralvarez.site/demo',
+    'PropTech': 'https://neiveralvarez.site/demo',
+    'Services': 'https://neiveralvarez.site/demo',
+    'Healthcare': 'https://neiveralvarez.site/demo',
+    'default': 'https://neiveralvarez.site/demo'
+  },
   
   // Analytics Tracking
   ANALYTICS: {

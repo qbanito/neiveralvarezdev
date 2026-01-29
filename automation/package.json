@@ -1,16 +1,19 @@
 {
   "name": "outreach-automation",
-  "version": "1.0.0",
-  "description": "Intelligent email outreach automation system",
+  "version": "2.0.0",
+  "description": "Intelligent email outreach automation with OpenAI personalization",
   "type": "module",
   "scripts": {
     "fetch": "node apify-fetcher.js",
     "send": "node sender.js",
     "analytics": "node analytics.js",
-    "test": "node apify-fetcher.js && node sender.js"
+    "test": "node apify-fetcher.js && node sender.js",
+    "preview": "node test-ai-email.js",
+    "test-ai": "node test-ai-email.js"
   },
   "dependencies": {
     "apify-client": "^2.8.0",
+    "openai": "^4.0.0",
     "resend": "^3.0.0"
   }
 }

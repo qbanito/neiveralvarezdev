@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Demos | Neiver Alvarez - Full Stack Developer</title>
+    <meta name="description" content="Explore interactive demos of e-commerce platforms, SaaS dashboards, booking systems, and more. See what's possible for your business.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        /* Header */
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: #6366f1;
+        }
+        
+        .back-link {
+            color: #a5b4fc;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+        
+        .back-link:hover {
+            color: #fff;
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Demo Grid */
+        .demos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            padding: 40px 0 80px;
+        }
+        
+        .demo-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .demo-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+        
+        .demo-preview {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+        }
+        
+        .demo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .demo-card:hover .demo-preview img {
+            transform: scale(1.05);
+        }
+        
+        .demo-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #6366f1;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .demo-content {
+            padding: 24px;
+        }
+        
+        .demo-content h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .demo-content p {
+            color: #94a3b8;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+        
+        .demo-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .feature-tag {
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+        
+        .demo-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #6366f1;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+        
+        .demo-cta {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        
+        .demo-cta:hover {
+            opacity: 0.9;
+        }
+        
+        /* Results Section */
+        .results-section {
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 24px;
+            padding: 60px 40px;
+            margin-bottom: 80px;
+            text-align: center;
+        }
+        
+        .results-section h2 {
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+        
+        .result-item {
+            text-align: center;
+        }
+        
+        .result-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: #6366f1;
+            margin-bottom: 8px;
+        }
+        
+        .result-text {
+            color: #94a3b8;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 60px 0 100px;
+        }
+        
+        .cta-section h2 {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+        
+        .cta-section p {
+            color: #94a3b8;
+            margin-bottom: 32px;
+            font-size: 18px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+        
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 40px 0;
+            text-align: center;
+            color: #64748b;
+        }
+        
+        footer a {
+            color: #a5b4fc;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .demos-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .results-section {
+                padding: 40px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="/" class="logo">Neiver<span>.</span></a>
+            <a href="/" class="back-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to Home
+            </a>
+        </div>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Interactive Demos</h1>
+                <p>Explore real solutions I've built. These aren't mockups — they're actual systems that drive results for businesses like yours.</p>
+            </div>
+        </section>
+        
+        <section class="container">
+            <div class="demos-grid">
+                
+                <!-- E-commerce Demo -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=400&fit=crop" alt="E-commerce Platform">
+                        <span class="demo-badge">E-commerce</span>
+                    </div>
+                    <div class="demo-content">
+                        <h3>Optimized Checkout System</h3>
+                        <p>2-step checkout that reduced cart abandonment by 40%. Includes automatic upsells, saved carts, and mobile-first design.</p>
+                        <div class="demo-features">
+                            <span class="feature-tag">React</span>
+                            <span class="feature-tag">Stripe</span>
+                            <span class="feature-tag">Node.js</span>
+                        </div>
+                        <div class="demo-stats">
+                            <div class="stat">
+                                <div class="stat-value">-40%</div>
+                                <div class="stat-label">Abandonment</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">+23%</div>
+                                <div class="stat-label">Revenue</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">2.1s</div>
+                                <div class="stat-label">Load Time</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="mailto:info@neiveralvarez.site?subject=E-commerce%20Demo%20Request" class="demo-cta">Request Live Demo →</a>
+                </div>
+                
+                <!-- SaaS Dashboard Demo -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop" alt="SaaS Dashboard">
+                        <span class="demo-badge">SaaS</span>
+                    </div>
+                    <div class="demo-content">
+                        <h3>Analytics Dashboard</h3>
+                        <p>Real-time analytics with AI-powered insights. Progressive onboarding that reduced churn by 32% in the first 90 days.</p>
+                        <div class="demo-features">
+                            <span class="feature-tag">TypeScript</span>
+                            <span class="feature-tag">PostgreSQL</span>
+                            <span class="feature-tag">AI/ML</span>
+                        </div>
+                        <div class="demo-stats">
+                            <div class="stat">
+                                <div class="stat-value">-32%</div>
+                                <div class="stat-label">Churn Rate</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">+28%</div>
+                                <div class="stat-label">LTV</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">4.8★</div>
+                                <div class="stat-label">User Rating</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="mailto:info@neiveralvarez.site?subject=SaaS%20Dashboard%20Demo%20Request" class="demo-cta">Request Live Demo →</a>
+                </div>
+                
+                <!-- Real Estate Demo -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=400&fit=crop" alt="Real Estate Platform">
+                        <span class="demo-badge">Real Estate</span>
+                    </div>
+                    <div class="demo-content">
+                        <h3>Property Portal</h3>
+                        <p>Smart property search with AI-powered filters, virtual tours, and lead qualification. 5x increase in qualified leads.</p>
+                        <div class="demo-features">
+                            <span class="feature-tag">Next.js</span>
+                            <span class="feature-tag">Maps API</span>
+                            <span class="feature-tag">3D Tours</span>
+                        </div>
+                        <div class="demo-stats">
+                            <div class="stat">
+                                <div class="stat-value">5x</div>
+                                <div class="stat-label">More Leads</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">+$2.1M</div>
+                                <div class="stat-label">Revenue</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">89%</div>
+                                <div class="stat-label">Satisfaction</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="mailto:info@neiveralvarez.site?subject=Real%20Estate%20Demo%20Request" class="demo-cta">Request Live Demo →</a>
+                </div>
+                
+                <!-- Booking System Demo -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <img src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=800&h=400&fit=crop" alt="Booking System">
+                        <span class="demo-badge">Services</span>
+                    </div>
+                    <div class="demo-content">
+                        <h3>Smart Booking System</h3>
+                        <p>Automated scheduling with calendar sync, payment integration, and reminder workflows. Eliminated 95% of no-shows.</p>
+                        <div class="demo-features">
+                            <span class="feature-tag">React</span>
+                            <span class="feature-tag">Calendar API</span>
+                            <span class="feature-tag">Twilio</span>
+                        </div>
+                        <div class="demo-stats">
+                            <div class="stat">
+                                <div class="stat-value">-95%</div>
+                                <div class="stat-label">No-Shows</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">3x</div>
+                                <div class="stat-label">Bookings</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">24/7</div>
+                                <div class="stat-label">Availability</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="mailto:info@neiveralvarez.site?subject=Booking%20System%20Demo%20Request" class="demo-cta">Request Live Demo →</a>
+                </div>
+                
+                <!-- AI Integration Demo -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop" alt="AI Integration">
+                        <span class="demo-badge">AI/ML</span>
+                    </div>
+                    <div class="demo-content">
+                        <h3>AI-Powered Automation</h3>
+                        <p>Custom AI solutions including chatbots, content generation, and predictive analytics. Reduce manual work by 70%.</p>
+                        <div class="demo-features">
+                            <span class="feature-tag">OpenAI</span>
+                            <span class="feature-tag">Python</span>
+                            <span class="feature-tag">LangChain</span>
+                        </div>
+                        <div class="demo-stats">
+                            <div class="stat">
+                                <div class="stat-value">-70%</div>
+                                <div class="stat-label">Manual Work</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">24/7</div>
+                                <div class="stat-label">AI Support</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">94%</div>
+                                <div class="stat-label">Accuracy</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="mailto:info@neiveralvarez.site?subject=AI%20Integration%20Demo%20Request" class="demo-cta">Request Live Demo →</a>
+                </div>
+                
+                <!-- ROI Calculator Demo -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=400&fit=crop" alt="ROI Calculator">
+                        <span class="demo-badge">Tools</span>
+                    </div>
+                    <div class="demo-content">
+                        <h3>ROI Calculator</h3>
+                        <p>Interactive tool that helps businesses calculate potential returns from web optimization. Personalized projections.</p>
+                        <div class="demo-features">
+                            <span class="feature-tag">React</span>
+                            <span class="feature-tag">TypeScript</span>
+                            <span class="feature-tag">Charts</span>
+                        </div>
+                        <div class="demo-stats">
+                            <div class="stat">
+                                <div class="stat-value">Free</div>
+                                <div class="stat-label">To Use</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">2min</div>
+                                <div class="stat-label">Quick</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">PDF</div>
+                                <div class="stat-label">Report</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="mailto:info@neiveralvarez.site?subject=ROI%20Calculator%20Demo%20Request" class="demo-cta">Try Calculator →</a>
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- Results Section -->
+        <section class="container">
+            <div class="results-section">
+                <h2>Real Results for Real Businesses</h2>
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-number">47%</div>
+                        <div class="result-text">Average Revenue Increase</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-number">32%</div>
+                        <div class="result-text">Churn Reduction</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-number">3x</div>
+                        <div class="result-text">More Qualified Leads</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-number">90</div>
+                        <div class="result-text">Days Average ROI</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <h2>Ready to See What's Possible?</h2>
+                <p>Let's talk about what a custom solution could do for your business.</p>
+                <a href="mailto:info@neiveralvarez.site?subject=Demo%20Interest" class="cta-button">Schedule a Call</a>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>© 2026 Neiver Alvarez. Full Stack Developer.</p>
+            <p style="margin-top: 8px;"><a href="/">neiveralvarez.site</a></p>
+        </div>
+    </footer>
+    
+    <!-- Simple Analytics -->
+    <script>
+        // Track demo views
+        if (typeof fetch !== 'undefined') {
+            fetch('/api/analytics', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    event: 'demo_page_view',
+                    referrer: document.referrer,
+                    timestamp: new Date().toISOString()
+                })
+            }).catch(() => {});
+        }
+    </script>
+</body>
+</html>

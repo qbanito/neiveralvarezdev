@@ -1,0 +1,9 @@
+{{firstName}},
+
+Me acordé de tu caso. {{caseStory}}
+
+{{caseResult}}
+
+¿Tu situación es parecida?
+
+Neiver

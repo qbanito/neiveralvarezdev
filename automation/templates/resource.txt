@@ -1,0 +1,9 @@
+Hey de nuevo,
+
+Encontré algo que te puede servir para {{company}}.
+
+{{resourceTip}}
+
+Si te sirve, genial. Si no, igual. Solo lo comparto porque me pareció relevante para lo que hacen.
+
+Neiver

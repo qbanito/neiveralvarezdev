@@ -1,5 +1,5 @@
-// 📧 SMART EMAIL SENDER
-// Intelligent email sending with rate limiting and safety checks
+// 📧 SMART EMAIL SENDER v2.0
+// Intelligent email sending with adaptive sequences, AI personalization, and conversation memory
 
 import { Resend } from 'resend';
 import fs from 'fs/promises';
@@ -7,11 +7,19 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { CONFIG, getCurrentDailyLimit, isWithinSendingHours } from './config.js';
 import { personalizeLead } from './email-personalizer.js';
+import { generatePersonalizedEmail } from './openai-personalizer.js';
+import { researchLead, enrichLeadWithResearch } from './lead-researcher.js';
+import { enrichLead } from './lead-enricher.js';
+import { logEmailSent, analyzeBehavior, getConversationSummary } from './conversation-memory.js';
+import { getNextEmailAction, generateNextEmail, getSequenceAnalytics } from './adaptive-sequence.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const resend = new Resend(CONFIG.RESEND_API_KEY);
+
+// ¿Usar AI para personalización?
+const USE_AI_PERSONALIZATION = CONFIG.OPENAI?.ENABLE_AI_PERSONALIZATION ?? true;
 
 // Load database files
 async function loadData(file) {
@@ -157,28 +165,95 @@ async function getLeadsToSend(limit) {
   return readyLeads.slice(0, limit);
 }
 
-// Send single email
+// Send single email (with deep enrichment + adaptive logic)
 async function sendEmail(lead, templateType = 'initial') {
   try {
-    // Personalize lead data
-    const personalizedData = personalizeLead(lead, templateType);
+    let subject, htmlContent, variant = null, body = '';
     
-    // Get and render template
-    const template = await getTemplate(lead.tier, templateType);
-    const htmlContent = renderTemplate(template, { ...personalizedData, email: lead.email });
-    
+    // Usar AI personalization si está habilitado
+    if (USE_AI_PERSONALIZATION && process.env.OPENAI_API_KEY) {
+      console.log(`   🤖 Generando email con AI para ${lead.email}...`);
+      
+      // 🔬 Enriquecer lead con análisis profundo (empresa, problemas, hooks)
+      let enrichedData = lead.enriched_data;
+      if (!enrichedData) {
+        console.log(`   🔬 Analizando empresa en profundidad...`);
+        try {
+          enrichedData = await enrichLead(lead);
+          lead.enriched_data = enrichedData;
+          console.log(`   📊 Problemas detectados: ${enrichedData.detected_problems?.length || 0}`);
+        } catch (enrichError) {
+          console.log(`   ⚠️ Enrichment failed, using basic data: ${enrichError.message}`);
+          enrichedData = {};
+        }
+      }
+      
+      // 🧠 Obtener contexto de conversación previa
+      const conversationSummary = await getConversationSummary(lead.email);
+      if (conversationSummary.emailCount > 0) {
+        console.log(`   💬 Historial: ${conversationSummary.emailCount} emails, engagement: ${conversationSummary.engagement}`);
+      }
+      
+      // 🎯 Obtener siguiente acción adaptativa
+      const nextAction = getNextEmailAction({ ...lead, enriched_data: enrichedData });
+      if (nextAction.action !== 'send') {
+        console.log(`   ⏸️ Action: ${nextAction.action} - ${nextAction.reason}`);
+        return { success: false, error: nextAction.reason };
+      }
+      
+      variant = nextAction.variant || enrichedData.recommended_variant;
+      const adaptiveType = nextAction.emailType || templateType;
+      console.log(`   📋 Type: ${adaptiveType}, Variant: ${variant || 'default'}`);
+      
+      // Investigar el lead
+      const research = await researchLead(lead);
+      const enrichedLead = enrichLeadWithResearch(lead, research);
+      enrichedLead.enriched_data = enrichedData;
+      enrichedLead.conversation_history = conversationSummary.lastEmails || [];
+      
+      // Mapear template types viejos a nuevos
+      const typeMapping = {
+        'initial': 'detective',
+        'follow-up-1': 'resource',
+        'follow-up-2': 'demo',
+        'follow-up-3': 'case',
+        'follow-up-4': 'question',
+        'breakup': 'friend',
+        'resurrection': 'detective'
+      };
+      
+      const aiEmailType = typeMapping[adaptiveType] || adaptiveType;
+      
+      // Generar email único con OpenAI
+      const aiEmail = await generatePersonalizedEmail(enrichedLead, aiEmailType, research);
+      
+      subject = aiEmail.subject;
+      body = aiEmail.body;
+      // Convertir texto plano a HTML simple
+      htmlContent = convertToSimpleHtml(aiEmail.body);
+      
+    } else {
+      // Fallback a personalización tradicional
+      console.log(`   📝 Usando personalización tradicional para ${lead.email}...`);
+      const personalizedData = personalizeLead(lead, templateType);
+      const template = await getTemplate(lead.tier, templateType);
+      htmlContent = renderTemplate(template, { ...personalizedData, email: lead.email });
+      subject = personalizedData.subject;
+    }
+
     // Send via Resend
     const result = await resend.emails.send({
       from: `${CONFIG.FROM_NAME} <${CONFIG.FROM_EMAIL}>`,
       to: lead.email,
       bcc: CONFIG.FORWARD_TO, // Copy for review
-      subject: personalizedData.subject,
+      subject: subject,
       html: htmlContent,
       replyTo: CONFIG.REPLY_TO,
       headers: {
         'X-Lead-ID': lead.id,
         'X-Campaign-Type': templateType,
-        'X-Lead-Tier': `${lead.tier}`
+        'X-Lead-Tier': `${lead.tier}`,
+        'X-AI-Generated': USE_AI_PERSONALIZATION ? 'true' : 'false'
       }
     });
     
@@ -186,7 +261,9 @@ async function sendEmail(lead, templateType = 'initial') {
       success: true,
       emailId: result.id,
       lead: lead,
-      personalizedData
+      personalizedData: { subject },
+      variant: variant,
+      body: body
     };
     
   } catch (error) {
@@ -199,23 +276,64 @@ async function sendEmail(lead, templateType = 'initial') {
   }
 }
 
-// Log sent email
+// Convertir texto plano a HTML simple (estilo email personal)
+function convertToSimpleHtml(text) {
+  const paragraphs = text.split('\n\n').map(p => p.trim()).filter(p => p);
+  const htmlParagraphs = paragraphs.map(p => {
+    // Convertir saltos de línea simples a <br>
+    const withBreaks = p.replace(/\n/g, '<br>');
+    // Convertir links
+    const withLinks = withBreaks.replace(
+      /(https?:\/\/[^\s]+)/g,
+      '<a href="$1" style="color: #0066cc;">$1</a>'
+    );
+    return `<p style="margin: 0 0 16px 0;">${withLinks}</p>`;
+  });
+  
+  return `
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; line-height: 1.6; color: #1a1a1a; max-width: 600px; padding: 20px;">
+${htmlParagraphs.join('\n')}
+</body>
+</html>
+  `.trim();
+}
+
+// Log sent email (+ save to conversation memory)
 async function logSentEmail(lead, result, templateType) {
   const sentData = await loadData(CONFIG.DATA_FILES.SENT);
   const leadsData = await loadData(CONFIG.DATA_FILES.LEADS);
   
   // Add to sent log
-  sentData.sent.push({
+  const sentRecord = {
     leadId: lead.id,
     email: lead.email,
     emailId: result.emailId,
     sentAt: new Date().toISOString(),
     templateType,
     tier: lead.tier,
-    subject: result.personalizedData.subject
-  });
+    subject: result.personalizedData.subject,
+    variant: result.variant || null,
+    aiGenerated: USE_AI_PERSONALIZATION
+  };
   
+  sentData.sent.push(sentRecord);
   sentData.todaySent += 1;
+  
+  // 🧠 Save to conversation memory for coherence tracking
+  try {
+    await logEmailSent(lead.email, {
+      subject: result.personalizedData.subject,
+      body: result.body || '',
+      emailType: templateType,
+      variant: result.variant
+    }, result.emailId);
+    console.log(`   🧠 Saved to conversation memory`);
+  } catch (memoryError) {
+    console.log(`   ⚠️ Memory save failed: ${memoryError.message}`);
+  }
   
   // Update lead status
   const leadIndex = leadsData.leads.findIndex(l => l.id === lead.id);
@@ -238,27 +356,31 @@ async function logSentEmail(lead, result, templateType) {
   await saveData(CONFIG.DATA_FILES.LEADS, leadsData);
 }
 
-// Get next delay based on sequence step
+// Get next delay based on sequence step (Nueva secuencia de 6 emails)
 function getNextDelay(step) {
   const delays = {
-    1: 3,  // Follow-up 1 after 3 days
-    2: 7,  // Follow-up 2 after 7 days
-    3: 14  // Breakup after 14 days
+    1: 3,   // Resource después de 3 días
+    2: 7,   // Demo después de 7 días
+    3: 11,  // Case después de 11 días
+    4: 15,  // Question después de 15 días
+    5: 21   // Friend (despedida) después de 21 días
   };
   return delays[step] || null;
 }
 
-// Get template type based on sequence step
+// Get template type based on sequence step (Nueva secuencia)
 function getTemplateType(step, isResurrection) {
-  if (isResurrection) return 'resurrection';
+  if (isResurrection) return 'detective'; // Resurrección = nuevo inicio
   
   const templates = {
-    0: 'initial',
-    1: 'follow-up-1',
-    2: 'follow-up-2',
-    3: 'breakup'
+    0: 'detective',     // Email 1: El Detective
+    1: 'resource',      // Email 2: El Recurso
+    2: 'demo',          // Email 3: El Demo
+    3: 'case',          // Email 4: El Caso
+    4: 'question',      // Email 5: La Pregunta
+    5: 'friend'         // Email 6: El Amigo (despedida)
   };
-  return templates[step] || 'initial';
+  return templates[step] || 'detective';
 }
 
 // Main send function
