@@ -5,8 +5,11 @@ import OpenAI from 'openai';
 import { CONFIG } from './config.js';
 import fs from 'fs/promises';
 
+// Clean API key (remove whitespace, newlines that cause HTTP header errors)
+const apiKey = (process.env.OPENAI_API_KEY || '').trim().replace(/[\r\n]/g, '');
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: apiKey
 });
 
 /**

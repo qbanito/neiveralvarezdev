@@ -4,8 +4,15 @@
 import OpenAI from 'openai';
 import { CONFIG } from './config.js';
 
+// Clean API key (remove whitespace, newlines that cause HTTP header errors)
+const apiKey = (process.env.OPENAI_API_KEY || '').trim().replace(/[\r\n]/g, '');
+
+if (!apiKey) {
+  console.error('⚠️ OPENAI_API_KEY not set or empty');
+}
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: apiKey
 });
 
 // Signature for all emails

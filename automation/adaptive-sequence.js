@@ -353,8 +353,12 @@ export function getSequenceAnalytics(lead) {
 
 // Need OpenAI for generating emails
 import OpenAI from 'openai';
+
+// Clean API key
+const apiKey = (process.env.OPENAI_API_KEY || '').trim().replace(/[\r\n]/g, '');
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: apiKey
 });
 
 export default {
