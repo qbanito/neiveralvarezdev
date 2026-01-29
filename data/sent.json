@@ -79,8 +79,108 @@
       "templateType": "initial",
       "tier": 1,
       "subject": "your company + revenue"
+    },
+    {
+      "leadId": "lead_1769294705280_2c2hde1xh",
+      "email": "james.jack@ubs.com",
+      "sentAt": "2026-01-29T15:37:37.741Z",
+      "templateType": "resource",
+      "tier": 1,
+      "subject": "re: UBS",
+      "variant": "B",
+      "aiGenerated": true
+    },
+    {
+      "leadId": "lead_1769294705281_hog6324oj",
+      "email": "khowell@professionalpt.com",
+      "sentAt": "2026-01-29T15:38:07.178Z",
+      "templateType": "resource",
+      "tier": 1,
+      "subject": "this might help",
+      "variant": "B",
+      "aiGenerated": true
+    },
+    {
+      "leadId": "lead_1769294705281_yuupw5haa",
+      "email": "john@greenchemindustries.com",
+      "sentAt": "2026-01-29T15:38:54.160Z",
+      "templateType": "resource",
+      "tier": 1,
+      "subject": "re: GreenChem Industries",
+      "variant": "A",
+      "aiGenerated": true
+    },
+    {
+      "leadId": "lead_1769294705281_k0kseic61",
+      "email": "ariyelle.brown@tendertouch.com",
+      "sentAt": "2026-01-29T15:39:26.358Z",
+      "templateType": "resource",
+      "tier": 1,
+      "subject": "re: Tender Touch",
+      "variant": "B",
+      "aiGenerated": true
+    },
+    {
+      "leadId": "lead_1769294705281_lnjcx3qiy",
+      "email": "tim.pryde@dolby.com",
+      "sentAt": "2026-01-29T15:39:59.625Z",
+      "templateType": "resource",
+      "tier": 1,
+      "subject": "re: Dolby",
+      "variant": "B",
+      "aiGenerated": true
+    },
+    {
+      "leadId": "lead_1769294705281_xx6j5cynk",
+      "email": "seungbum.yoo@tlcsolutions.ca",
+      "sentAt": "2026-01-29T15:40:17.475Z",
+      "templateType": "resource",
+      "tier": 1,
+      "subject": "found something",
+      "variant": "B",
+      "aiGenerated": true
+    },
+    {
+      "leadId": "lead_1769294705281_lwonq9ql2",
+      "email": "stacie.hudgens@clinoutsolutions.com",
+      "sentAt": "2026-01-29T15:41:09.753Z",
+      "templateType": "resource",
+      "tier": 1,
+      "subject": "found something",
+      "variant": "A",
+      "aiGenerated": true
+    },
+    {
+      "leadId": "lead_1769294705281_z9laywjew",
+      "email": "drwong@sevneurology.com",
+      "sentAt": "2026-01-29T15:41:53.645Z",
+      "templateType": "resource",
+      "tier": 1,
+      "subject": "this might help",
+      "variant": "B",
+      "aiGenerated": true
+    },
+    {
+      "leadId": "lead_1769294705281_908de85j4",
+      "email": "smiller@fusion-etc.com",
+      "sentAt": "2026-01-29T15:42:34.154Z",
+      "templateType": "resource",
+      "tier": 1,
+      "subject": "re: Fusion Etc",
+      "variant": "A",
+      "aiGenerated": true
+    },
+    {
+      "leadId": "lead_1769294705281_pc9rq78io",
+      "email": "mschmidt@educatedsolutionscorp.com",
+      "sentAt": "2026-01-29T15:43:09.789Z",
+      "templateType": "resource",
+      "tier": 1,
+      "subject": "found something",
+      "variant": "B",
+      "aiGenerated": true
     }
   ],
   "todaySent": 10,
-  "lastReset": "2026-01-26"
+  "lastReset": "2026-01-29"
 }
