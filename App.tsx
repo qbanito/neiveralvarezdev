@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MapPin, Phone, MessageCircle, Mail, ChevronDown, Code, Zap, Globe, Award, QrCode, FileText, X, Download, Share2, Briefcase, GraduationCap, User, Check, Star, ChevronRight, Send, Building2, Brain, Calendar, Linkedin } from 'lucide-react';
 import { PROJECTS, CONTACT_INFO, EXPERIENCE_YEARS, COMPANY_NAME, DEVELOPER_NAME, RESUME_DATA, TITLE, PROFILE_IMAGE, SERVICES, TESTIMONIALS, FAQS, PROCESS_STEPS } from './constants';
 import { ProjectCard } from './components/ProjectCard';
+import InvestorPage from './components/InvestorPage';
 
 function App() {
   const [showCV, setShowCV] = useState(false);
@@ -16,6 +17,17 @@ function App() {
     budget: ''
   });
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [showInvestors, setShowInvestors] = useState(false);
+
+  // Check URL hash on mount for direct investor page access
+  React.useEffect(() => {
+    if (window.location.hash === '#investors') setShowInvestors(true);
+    const handleHash = () => {
+      if (window.location.hash === '#investors') setShowInvestors(true);
+    };
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
 
   // Helper to close modals
   const closeModal = (e: React.MouseEvent) => {
@@ -83,6 +95,7 @@ function App() {
             <a href="#projects" className="hover:text-cyan-400 transition-colors">Projects</a>
             <button onClick={() => setShowCV(true)} className="hover:text-cyan-400 transition-colors">Resume</button>
             <a href="#contact" className="hover:text-cyan-400 transition-colors">Contact</a>
+            <button onClick={() => { setShowInvestors(true); window.location.hash = 'investors'; }} className="hover:text-cyan-400 transition-colors flex items-center gap-1">Investors</button>
           </div>
           <a 
             href={CONTACT_INFO.whatsappUrl}
@@ -1091,6 +1104,13 @@ function App() {
             </div>
           </div>
          </div>
+      )}
+
+      {/* Investor Page Overlay */}
+      {showInvestors && (
+        <div className="fixed inset-0 z-[100] bg-slate-950 overflow-y-auto overflow-x-hidden">
+          <InvestorPage onBack={() => { setShowInvestors(false); window.location.hash = ''; }} />
+        </div>
       )}
     </div>
   );
