@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowLeft, TrendingUp, DollarSign, Building2, Shield, ChevronRight, PieChart, BarChart3, Target, Zap, Lock, Briefcase, Users, CreditCard, Landmark, ArrowUpRight, CheckCircle2, XCircle, Calculator, Layers, Percent, Clock, Wallet, LineChart, Volume2, Play, Pause, Globe2 } from 'lucide-react';
+import { ArrowLeft, TrendingUp, DollarSign, Building2, Shield, ChevronRight, PieChart, BarChart3, Target, Zap, Lock, Briefcase, Users, CreditCard, Landmark, ArrowUpRight, CheckCircle2, XCircle, Calculator, Layers, Percent, Clock, Wallet, LineChart, Volume2, Play, Pause, Globe2, Menu, X } from 'lucide-react';
 
 // ─── Animated Counter Hook ───
 function useCountUp(end: number, duration = 2000, startOnView = true) {
@@ -165,6 +165,9 @@ function ParticleField() {
 // MAIN INVESTOR PAGE COMPONENT
 // ════════════════════════════════════════════════════════════════
 export default function InvestorPage({ onBack }: { onBack: () => void }) {
+  // ─── Mobile Menu State ───
+  const [mobileNav, setMobileNav] = useState(false);
+
   // ─── Audio Player State ───
   const [audioLang, setAudioLang] = useState<'es' | 'en'>('en');
   const [isPlaying, setIsPlaying] = useState(false);
@@ -309,20 +312,63 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/50">
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
           <button onClick={onBack} className="flex items-center gap-2 text-slate-400 hover:text-cyan-400 transition-colors text-sm font-medium">
-            <ArrowLeft size={18} /> Back to Portfolio
+            <ArrowLeft size={18} /> <span className="hidden sm:inline">Back to Portfolio</span>
           </button>
-          <div className="flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-3">
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-sm font-semibold text-white tracking-wider">INVESTOR RELATIONS</span>
           </div>
-          <a
-            href="https://wa.me/17865432478?text=I'm%20interested%20in%20the%20investment%20opportunity"
-            target="_blank"
-            rel="noreferrer"
-            className="px-5 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold hover:shadow-lg hover:shadow-cyan-500/30 transition-all hover:-translate-y-0.5"
-          >
-            Contact Now
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href="https://wa.me/17865432478?text=I'm%20interested%20in%20the%20investment%20opportunity"
+              target="_blank"
+              rel="noreferrer"
+              className="hidden sm:inline-flex px-5 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold hover:shadow-lg hover:shadow-cyan-500/30 transition-all hover:-translate-y-0.5"
+            >
+              Contact Now
+            </a>
+            {/* Hamburger (mobile) */}
+            <button
+              onClick={() => setMobileNav(!mobileNav)}
+              className="sm:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-slate-900/50 border border-slate-700 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/50 transition-all"
+              aria-label="Toggle menu"
+            >
+              {mobileNav ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile dropdown */}
+        <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-out ${mobileNav ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'}`}>
+          <div className="bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/50 px-6 py-5 flex flex-col gap-3">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-xs font-bold text-slate-400 tracking-widest uppercase">Investor Relations</span>
+            </div>
+            <a href="#model" onClick={() => setMobileNav(false)} className="flex items-center gap-3 text-slate-300 hover:text-cyan-400 transition-colors text-sm font-medium py-2.5 border-b border-slate-800/30">
+              <Layers size={16} className="text-slate-500" /> Capital Model
+            </a>
+            <a href="#calculator" onClick={() => setMobileNav(false)} className="flex items-center gap-3 text-slate-300 hover:text-cyan-400 transition-colors text-sm font-medium py-2.5 border-b border-slate-800/30">
+              <Calculator size={16} className="text-slate-500" /> ROI Calculator
+            </a>
+            <a href="#banking" onClick={() => setMobileNav(false)} className="flex items-center gap-3 text-slate-300 hover:text-cyan-400 transition-colors text-sm font-medium py-2.5 border-b border-slate-800/30">
+              <Landmark size={16} className="text-slate-500" /> Banking Leverage
+            </a>
+            <a href="#deal" onClick={() => setMobileNav(false)} className="flex items-center gap-3 text-slate-300 hover:text-cyan-400 transition-colors text-sm font-medium py-2.5 border-b border-slate-800/30">
+              <Briefcase size={16} className="text-slate-500" /> Deal Structure
+            </a>
+            <button onClick={() => { onBack(); setMobileNav(false); }} className="flex items-center gap-3 text-slate-400 hover:text-white transition-colors text-sm font-medium py-2.5 border-b border-slate-800/30">
+              <ArrowLeft size={16} className="text-slate-500" /> Back to Portfolio
+            </button>
+            <a
+              href="https://wa.me/17865432478?text=I'm%20interested%20in%20the%20investment%20opportunity"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-2 text-center px-5 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold shadow-lg"
+            >
+              Contact Now
+            </a>
+          </div>
         </div>
       </nav>
 
@@ -1256,7 +1302,7 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
       </section>
 
       {/* ─── Banking Leverage ─── */}
-      <section className="py-24 relative overflow-hidden">
+      <section id="banking" className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-950/30 via-slate-950 to-blue-950/20 -z-10" />
         <div className="container mx-auto px-6">
           <Reveal>
@@ -1338,7 +1384,7 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
       </section>
 
       {/* ─── Deal Structure Options ─── */}
-      <section className="py-24 bg-slate-900/50 relative">
+      <section id="deal" className="py-24 bg-slate-900/50 relative">
         <div className="container mx-auto px-6">
           <Reveal>
             <div className="text-center mb-16">

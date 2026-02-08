@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, MessageCircle, Mail, ChevronDown, Code, Zap, Globe, Award, QrCode, FileText, X, Download, Share2, Briefcase, GraduationCap, User, Check, Star, ChevronRight, Send, Building2, Brain, Calendar, Linkedin } from 'lucide-react';
+import { MapPin, Phone, MessageCircle, Mail, ChevronDown, Code, Zap, Globe, Award, QrCode, FileText, X, Download, Share2, Briefcase, GraduationCap, User, Check, Star, ChevronRight, Send, Building2, Brain, Calendar, Linkedin, Menu } from 'lucide-react';
 import { PROJECTS, CONTACT_INFO, EXPERIENCE_YEARS, COMPANY_NAME, DEVELOPER_NAME, RESUME_DATA, TITLE, PROFILE_IMAGE, SERVICES, TESTIMONIALS, FAQS, PROCESS_STEPS } from './constants';
 import { ProjectCard } from './components/ProjectCard';
 import InvestorPage from './components/InvestorPage';
@@ -8,6 +8,7 @@ function App() {
   const [showCV, setShowCV] = useState(false);
   const [showCard, setShowCard] = useState(false);
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -97,15 +98,47 @@ function App() {
             <a href="#contact" className="hover:text-cyan-400 transition-colors">Contact</a>
             <button onClick={() => { setShowInvestors(true); window.location.hash = 'investors'; }} className="hover:text-cyan-400 transition-colors flex items-center gap-1">Investors</button>
           </div>
-          <a 
-            href={CONTACT_INFO.whatsappUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="px-5 py-2 rounded-full bg-slate-100 text-slate-900 font-semibold hover:bg-cyan-400 hover:text-slate-900 transition-all shadow-[0_0_20px_rgba(34,211,238,0.2)]"
-          >
-            Let's Talk
-          </a>
+          <div className="flex items-center gap-3">
+            <a 
+              href={CONTACT_INFO.whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="hidden sm:inline-flex px-5 py-2 rounded-full bg-slate-100 text-slate-900 font-semibold hover:bg-cyan-400 hover:text-slate-900 transition-all shadow-[0_0_20px_rgba(34,211,238,0.2)]"
+            >
+              Let's Talk
+            </a>
+            {/* Hamburger button (mobile) */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-slate-900/50 border border-slate-700 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/50 transition-all"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile menu dropdown */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/50 animate-fade-in-up">
+            <div className="container mx-auto px-6 py-6 flex flex-col gap-4">
+              <a href="#about" onClick={() => setMobileMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors text-base font-medium py-2 border-b border-slate-800/30">About</a>
+              <a href="#services" onClick={() => setMobileMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors text-base font-medium py-2 border-b border-slate-800/30">Services</a>
+              <a href="#projects" onClick={() => setMobileMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors text-base font-medium py-2 border-b border-slate-800/30">Projects</a>
+              <button onClick={() => { setShowCV(true); setMobileMenuOpen(false); }} className="text-left text-slate-300 hover:text-cyan-400 transition-colors text-base font-medium py-2 border-b border-slate-800/30">Resume</button>
+              <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-slate-300 hover:text-cyan-400 transition-colors text-base font-medium py-2 border-b border-slate-800/30">Contact</a>
+              <button onClick={() => { setShowInvestors(true); window.location.hash = 'investors'; setMobileMenuOpen(false); }} className="text-left text-slate-300 hover:text-cyan-400 transition-colors text-base font-medium py-2 border-b border-slate-800/30">Investors</button>
+              <a 
+                href={CONTACT_INFO.whatsappUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-2 text-center px-5 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold shadow-lg"
+              >
+                Let's Talk
+              </a>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
