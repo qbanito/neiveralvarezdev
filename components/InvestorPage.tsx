@@ -240,23 +240,26 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
 
   const m = scenarios[scenarioIndex].multiplier;
 
-  // Revenue model
+  // Investment scale factor — revenue grows with more capital (base model = $40K)
+  const investScale = investment / 40000;
+
+  // Revenue model (scales with both scenario and investment)
   const getMonthlyRevenue = (month: number) => {
-    if (month <= 3) return 3000 * m;
-    if (month <= 6) return 6000 * m;
-    if (month <= 12) return 10000 * m;
-    if (month <= 24) return 15000 * m;
-    return 22000 * m;
+    if (month <= 3) return 3000 * m * investScale;
+    if (month <= 6) return 6000 * m * investScale;
+    if (month <= 12) return 10000 * m * investScale;
+    if (month <= 24) return 15000 * m * investScale;
+    return 22000 * m * investScale;
   };
 
   const getMonthlyProfit = (month: number) => getMonthlyRevenue(month) * 0.40;
 
   // 12-month projections
-  const year1Revenue = (3000 * 3 + 6000 * 3 + 10000 * 6) * m;
+  const year1Revenue = (3000 * 3 + 6000 * 3 + 10000 * 6) * m * investScale;
   const year1Profit = year1Revenue * 0.40;
-  const year2Revenue = 175000 * m;
+  const year2Revenue = 175000 * m * investScale;
   const year2Profit = year2Revenue * 0.42;
-  const year3Revenue = 250000 * m;
+  const year3Revenue = 250000 * m * investScale;
   const year3Profit = year3Revenue * 0.45;
 
   // Investor returns based on sliders
