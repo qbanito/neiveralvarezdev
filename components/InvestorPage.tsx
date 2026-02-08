@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowLeft, TrendingUp, DollarSign, Building2, Shield, ChevronRight, PieChart, BarChart3, Target, Zap, Lock, Briefcase, Users, CreditCard, Landmark, ArrowUpRight, CheckCircle2, XCircle, Calculator, Layers, Percent, Clock, Wallet, LineChart, Volume2, Play, Pause, Globe2, Menu, X } from 'lucide-react';
+import { ArrowLeft, TrendingUp, DollarSign, Building2, Shield, ChevronRight, PieChart, BarChart3, Target, Zap, Lock, Briefcase, Users, CreditCard, Landmark, ArrowUpRight, CheckCircle2, XCircle, Calculator, Layers, Percent, Clock, Wallet, LineChart, Volume2, Play, Pause, Globe2, Menu, X, Send, UserCheck, Building, CalendarCheck } from 'lucide-react';
 
 // ─── Animated Counter Hook ───
 function useCountUp(end: number, duration = 2000, startOnView = true) {
@@ -231,6 +231,43 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
   // ─── ROI Simulator State ───
   const [simMonth, setSimMonth] = useState(12);
 
+  // ─── Investor Form State ───
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    investmentRange: '',
+    timeline: '',
+    experience: '',
+    interests: [] as string[],
+    goals: '',
+    questions: '',
+  });
+  const [formSending, setFormSending] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formError, setFormError] = useState('');
+
+  const handleInvestorSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormSending(true);
+    setFormError('');
+    try {
+      const res = await fetch('/.netlify/functions/investor-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong');
+      setFormSubmitted(true);
+    } catch (err: any) {
+      setFormError(err.message || 'Failed to submit. Please try again.');
+    } finally {
+      setFormSending(false);
+    }
+  };
+
   // Scenario multipliers
   const scenarios = [
     { label: 'Conservative', multiplier: 0.75, color: 'text-yellow-400', bg: 'bg-yellow-400/10 border-yellow-400/30' },
@@ -359,6 +396,9 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
             </a>
             <a href="#deal" onClick={() => setMobileNav(false)} className="flex items-center gap-3 text-slate-300 hover:text-cyan-400 transition-colors text-sm font-medium py-2.5 border-b border-slate-800/30">
               <Briefcase size={16} className="text-slate-500" /> Deal Structure
+            </a>
+            <a href="#apply" onClick={() => setMobileNav(false)} className="flex items-center gap-3 text-slate-300 hover:text-cyan-400 transition-colors text-sm font-medium py-2.5 border-b border-slate-800/30">
+              <Send size={16} className="text-slate-500" /> Apply Now
             </a>
             <button onClick={() => { onBack(); setMobileNav(false); }} className="flex items-center gap-3 text-slate-400 hover:text-white transition-colors text-sm font-medium py-2.5 border-b border-slate-800/30">
               <ArrowLeft size={16} className="text-slate-500" /> Back to Portfolio
@@ -1626,6 +1666,256 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
               </div>
             </Reveal>
           </div>
+        </div>
+      </section>
+
+      {/* ─── INVESTOR INTEREST FORM ─── */}
+      <section id="apply" className="py-24 bg-slate-900/50 relative overflow-hidden">
+        <div className="absolute -top-60 right-1/4 w-[500px] h-[500px] bg-purple-600/6 rounded-full blur-[180px] -z-10" />
+        <div className="absolute -bottom-40 left-1/3 w-[400px] h-[400px] bg-cyan-600/6 rounded-full blur-[140px] -z-10" />
+
+        <div className="container mx-auto px-6">
+          <Reveal>
+            <div className="text-center mb-16">
+              <span className="text-cyan-400 text-sm font-bold tracking-widest uppercase">Apply</span>
+              <h2 className="text-3xl md:text-5xl font-bold text-white mt-3 font-serif">
+                Investor <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Application</span>
+              </h2>
+              <p className="text-slate-400 mt-4 max-w-2xl mx-auto">
+                Tell us about yourself and your investment goals. We'll respond within 24 hours with a personalized overview.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <div className="max-w-3xl mx-auto">
+              {formSubmitted ? (
+                <div className="glass rounded-3xl p-10 md:p-14 text-center animate-fade-in-up">
+                  <div className="w-20 h-20 rounded-full bg-emerald-500/10 border-2 border-emerald-500/30 flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle2 className="text-emerald-400" size={40} />
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">Application Received!</h3>
+                  <p className="text-slate-400 text-lg mb-6 max-w-md mx-auto">
+                    Thank you, <span className="text-cyan-400 font-semibold">{formData.name}</span>. Check your email for a confirmation with next steps and a link to schedule a private meeting.
+                  </p>
+                  <a
+                    href="https://calendly.com/convoycubano1/30min"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold shadow-lg shadow-cyan-500/25 hover:shadow-cyan-400/40 hover:-translate-y-0.5 transition-all"
+                  >
+                    <CalendarCheck size={18} /> Schedule Meeting Now
+                  </a>
+                </div>
+              ) : (
+                <form onSubmit={handleInvestorSubmit} className="glass rounded-3xl p-8 md:p-10 space-y-8">
+                  {/* Section 1: Personal Info */}
+                  <div>
+                    <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-5">
+                      <UserCheck className="text-cyan-400" size={20} /> Personal Information
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-5">
+                      <div>
+                        <label className="block text-xs text-slate-500 uppercase tracking-wider font-bold mb-2">Full Name *</label>
+                        <input
+                          type="text" required value={formData.name}
+                          onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
+                          className="w-full bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm placeholder-slate-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 outline-none transition-all"
+                          placeholder="John Smith"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-slate-500 uppercase tracking-wider font-bold mb-2">Email Address *</label>
+                        <input
+                          type="email" required value={formData.email}
+                          onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
+                          className="w-full bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm placeholder-slate-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 outline-none transition-all"
+                          placeholder="john@company.com"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-slate-500 uppercase tracking-wider font-bold mb-2">Phone Number</label>
+                        <input
+                          type="tel" value={formData.phone}
+                          onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))}
+                          className="w-full bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm placeholder-slate-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 outline-none transition-all"
+                          placeholder="+1 (555) 000-0000"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-slate-500 uppercase tracking-wider font-bold mb-2">Company / Organization</label>
+                        <input
+                          type="text" value={formData.company}
+                          onChange={e => setFormData(p => ({ ...p, company: e.target.value }))}
+                          className="w-full bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm placeholder-slate-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 outline-none transition-all"
+                          placeholder="Acme Inc."
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="border-t border-slate-800" />
+
+                  {/* Section 2: Investment Profile */}
+                  <div>
+                    <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-5">
+                      <DollarSign className="text-emerald-400" size={20} /> Investment Profile
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-5">
+                      <div>
+                        <label className="block text-xs text-slate-500 uppercase tracking-wider font-bold mb-2">Investment Range *</label>
+                        <select
+                          required value={formData.investmentRange}
+                          onChange={e => setFormData(p => ({ ...p, investmentRange: e.target.value }))}
+                          className="w-full bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 outline-none transition-all appearance-none"
+                        >
+                          <option value="" disabled className="bg-slate-900">Select range...</option>
+                          <option value="$25,000 – $40,000" className="bg-slate-900">$25,000 – $40,000</option>
+                          <option value="$40,000 – $55,000" className="bg-slate-900">$40,000 – $55,000</option>
+                          <option value="$55,000 – $75,000" className="bg-slate-900">$55,000 – $75,000</option>
+                          <option value="$75,000+" className="bg-slate-900">$75,000+</option>
+                          <option value="Flexible / To Discuss" className="bg-slate-900">Flexible / To Discuss</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs text-slate-500 uppercase tracking-wider font-bold mb-2">Investment Timeline</label>
+                        <select
+                          value={formData.timeline}
+                          onChange={e => setFormData(p => ({ ...p, timeline: e.target.value }))}
+                          className="w-full bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 outline-none transition-all appearance-none"
+                        >
+                          <option value="" disabled className="bg-slate-900">Select timeline...</option>
+                          <option value="Ready to invest now" className="bg-slate-900">Ready to invest now</option>
+                          <option value="Within 1 month" className="bg-slate-900">Within 1 month</option>
+                          <option value="1-3 months" className="bg-slate-900">1–3 months</option>
+                          <option value="Just exploring" className="bg-slate-900">Just exploring options</option>
+                        </select>
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-xs text-slate-500 uppercase tracking-wider font-bold mb-2">Prior Investment Experience</label>
+                        <select
+                          value={formData.experience}
+                          onChange={e => setFormData(p => ({ ...p, experience: e.target.value }))}
+                          className="w-full bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 outline-none transition-all appearance-none"
+                        >
+                          <option value="" disabled className="bg-slate-900">Select experience...</option>
+                          <option value="First-time investor" className="bg-slate-900">First-time investor</option>
+                          <option value="Some experience (1-3 investments)" className="bg-slate-900">Some experience (1–3 investments)</option>
+                          <option value="Experienced investor (4+ investments)" className="bg-slate-900">Experienced investor (4+ investments)</option>
+                          <option value="Professional / Institutional" className="bg-slate-900">Professional / Institutional</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="border-t border-slate-800" />
+
+                  {/* Section 3: Interests */}
+                  <div>
+                    <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-5">
+                      <Building className="text-purple-400" size={20} /> What Interests You Most?
+                    </h3>
+                    <p className="text-xs text-slate-500 mb-4">Select all that apply</p>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {[
+                        'Revenue Share Model',
+                        'Equity Ownership',
+                        'Automated Systems',
+                        'Digital Real Estate',
+                        'AI & Automation',
+                        'Corporate Structure',
+                      ].map(interest => (
+                        <button
+                          key={interest}
+                          type="button"
+                          onClick={() => {
+                            setFormData(p => ({
+                              ...p,
+                              interests: p.interests.includes(interest)
+                                ? p.interests.filter(i => i !== interest)
+                                : [...p.interests, interest]
+                            }));
+                          }}
+                          className={`px-3 py-2.5 rounded-xl text-xs font-bold border transition-all text-left ${
+                            formData.interests.includes(interest)
+                              ? 'bg-cyan-500/10 border-cyan-500/40 text-cyan-400'
+                              : 'bg-slate-800/40 border-slate-700/40 text-slate-500 hover:border-slate-500'
+                          }`}
+                        >
+                          <span className="mr-1.5">{formData.interests.includes(interest) ? '✓' : '○'}</span>
+                          {interest}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="border-t border-slate-800" />
+
+                  {/* Section 4: Open ended */}
+                  <div>
+                    <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-5">
+                      <Target className="text-yellow-400" size={20} /> Goals & Questions
+                    </h3>
+                    <div className="space-y-5">
+                      <div>
+                        <label className="block text-xs text-slate-500 uppercase tracking-wider font-bold mb-2">What are your main investment goals?</label>
+                        <textarea
+                          value={formData.goals}
+                          onChange={e => setFormData(p => ({ ...p, goals: e.target.value }))}
+                          rows={3}
+                          className="w-full bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm placeholder-slate-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 outline-none transition-all resize-none"
+                          placeholder="E.g., passive income, long-term growth, portfolio diversification..."
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-slate-500 uppercase tracking-wider font-bold mb-2">Any questions for our team?</label>
+                        <textarea
+                          value={formData.questions}
+                          onChange={e => setFormData(p => ({ ...p, questions: e.target.value }))}
+                          rows={3}
+                          className="w-full bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm placeholder-slate-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 outline-none transition-all resize-none"
+                          placeholder="Anything you'd like to know before our meeting..."
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Submit */}
+                  <div className="pt-4">
+                    <button
+                      type="submit"
+                      disabled={formSending}
+                      className={`w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-bold text-lg transition-all ${
+                        formSending
+                          ? 'bg-slate-800 text-slate-500 cursor-wait'
+                          : 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-400/40 hover:-translate-y-0.5'
+                      }`}
+                    >
+                      {formSending ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-slate-600 border-t-cyan-400 rounded-full animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send size={20} /> Submit Application
+                        </>
+                      )}
+                    </button>
+                    {formError && (
+                      <p className="text-red-400 text-sm text-center mt-3">{formError}</p>
+                    )}
+                    <p className="text-[10px] text-slate-600 text-center mt-4">
+                      🔒 Your data is encrypted and confidential. We never share your information with third parties.
+                    </p>
+                  </div>
+                </form>
+              )}
+            </div>
+          </Reveal>
         </div>
       </section>
 
