@@ -957,9 +957,9 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
 
                   return (
                     <>
-                      {/* Chart with hover interaction */}
+                      {/* Chart with hover interaction — hide tooltips on touch screens via pointer media query */}
                       <div className="relative group/chart">
-                        <svg viewBox={`0 0 ${chartW} ${chartH}`} className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
+                        <svg viewBox={`0 0 ${chartW} ${chartH}`} className="w-full h-auto max-h-[55vw] md:max-h-none" preserveAspectRatio="xMidYMid meet">
                           <defs>
                             {/* Revenue gradient */}
                             <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
@@ -1005,9 +1005,9 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
 
                           {/* Investment threshold line */}
                           <line x1={padL} y1={invY} x2={chartW - padR} y2={invY} stroke="#ef4444" strokeWidth="1.5" strokeDasharray="8 4" opacity="0.5" />
-                          <rect x={padL} y={invY - 10} width="82" height="18" rx="4" fill="rgba(239,68,68,0.15)" />
-                          <text x={padL + 6} y={invY + 2} fill="#ef4444" fontSize="9" fontWeight="bold" fontFamily="monospace">
-                            Investment ${(investment / 1000).toFixed(0)}K
+                          <rect x={padL} y={invY - 10} width="72" height="18" rx="4" fill="rgba(239,68,68,0.15)" />
+                          <text x={padL + 5} y={invY + 2} fill="#ef4444" fontSize="8" fontWeight="bold" fontFamily="monospace">
+                            Inv ${(investment / 1000).toFixed(0)}K
                           </text>
 
                           {/* Breakeven marker */}
@@ -1031,18 +1031,21 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
                             </g>
                           ))}
 
-                          {/* X axis month labels */}
-                          {simData.filter((_, i) => {
-                            if (simMonth <= 12) return true;
-                            if (simMonth <= 24) return i % 2 === 0;
-                            return i % 3 === 0;
+                          {/* X axis month labels — adaptive density for mobile */}
+                          {simData.filter((_, i, arr) => {
+                            const total = arr.length;
+                            // Never show more than ~8 labels to keep things clean on any screen
+                            if (total <= 6) return true;
+                            if (total <= 12) return i % 2 === 0 || i === total - 1;
+                            if (total <= 24) return i % 3 === 0 || i === total - 1;
+                            return i % 6 === 0 || i === total - 1;
                           }).map((d, i) => (
-                            <text key={i} x={xScale(d.month - 1)} y={chartH - padB + 18} textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="9" fontFamily="monospace">
-                              {d.month}
+                            <text key={i} x={xScale(d.month - 1)} y={chartH - padB + 16} textAnchor="middle" fill="rgba(255,255,255,0.25)" fontSize="8" fontFamily="monospace">
+                              M{d.month}
                             </text>
                           ))}
-                          <text x={padL + w / 2} y={chartH - 4} textAnchor="middle" fill="rgba(255,255,255,0.15)" fontSize="9">
-                            Month
+                          <text x={padL + w / 2} y={chartH - 2} textAnchor="middle" fill="rgba(255,255,255,0.12)" fontSize="8">
+                            Month →
                           </text>
 
                           {/* Hover zones — invisible rects for each month */}
@@ -1053,22 +1056,22 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
                                 <rect x={xScale(i) - barW / 2} y={padT} width={barW} height={h} fill="transparent" />
                                 {/* Vertical crosshair */}
                                 <line x1={xScale(i)} y1={padT} x2={xScale(i)} y2={chartH - padB} stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="2 2" className="opacity-0 group-hover/bar:opacity-100 transition-opacity" />
-                                {/* Tooltip card */}
-                                <foreignObject x={Math.min(xScale(i) - 70, chartW - padR - 150)} y={Math.max(yScale(d.revenue) - 95, padT)} width="150" height="90" className="opacity-0 group-hover/bar:opacity-100 transition-opacity pointer-events-none">
-                                  <div className="bg-slate-900/95 backdrop-blur-md rounded-xl p-3 border border-slate-700/60 shadow-2xl shadow-black/40">
-                                    <p className="text-[11px] font-bold text-white mb-1.5">Month {d.month}</p>
-                                    <div className="space-y-1">
+                                {/* Tooltip card — hidden on touch devices */}
+                                <foreignObject x={Math.min(Math.max(xScale(i) - 65, padL), chartW - padR - 130)} y={Math.max(yScale(d.revenue) - 85, padT)} width="130" height="82" className="opacity-0 group-hover/bar:opacity-100 transition-opacity pointer-events-none hidden md:block">
+                                  <div className="bg-slate-900/95 backdrop-blur-md rounded-lg p-2.5 border border-slate-700/60 shadow-2xl shadow-black/40">
+                                    <p className="text-[10px] font-bold text-white mb-1">M{d.month}</p>
+                                    <div className="space-y-0.5">
                                       <div className="flex justify-between">
-                                        <span className="text-[10px] text-cyan-400">Revenue</span>
-                                        <span className="text-[10px] font-bold text-white">${(d.revenue / 1000).toFixed(1)}K</span>
+                                        <span className="text-[9px] text-cyan-400">Rev</span>
+                                        <span className="text-[9px] font-bold text-white">${(d.revenue / 1000).toFixed(1)}K</span>
                                       </div>
                                       <div className="flex justify-between">
-                                        <span className="text-[10px] text-blue-400">Profit</span>
-                                        <span className="text-[10px] font-bold text-white">${(d.profit / 1000).toFixed(1)}K</span>
+                                        <span className="text-[9px] text-blue-400">Profit</span>
+                                        <span className="text-[9px] font-bold text-white">${(d.profit / 1000).toFixed(1)}K</span>
                                       </div>
                                       <div className="flex justify-between">
-                                        <span className="text-[10px] text-emerald-400">Your Return</span>
-                                        <span className="text-[10px] font-bold text-emerald-400">${(d.investorReturn / 1000).toFixed(1)}K</span>
+                                        <span className="text-[9px] text-emerald-400">Return</span>
+                                        <span className="text-[9px] font-bold text-emerald-400">${(d.investorReturn / 1000).toFixed(1)}K</span>
                                       </div>
                                     </div>
                                   </div>
@@ -1100,27 +1103,27 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
                       </div>
 
                       {/* ── KPI Summary Cards (at selected month) ── */}
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-8">
                         {[
                           {
                             icon: <LineChart size={16} className="text-cyan-400" />,
-                            label: `Cum. Revenue (Mo ${simMonth})`,
+                            label: `Revenue (M${simMonth})`,
                             value: `$${(lastCumRev / 1000).toFixed(0)}K`,
                             color: 'text-white',
                             bg: 'from-cyan-500/8 to-cyan-500/2',
                           },
                           {
                             icon: <Wallet size={16} className="text-emerald-400" />,
-                            label: `Your Return (Mo ${simMonth})`,
+                            label: `Return (M${simMonth})`,
                             value: `$${(lastInvReturn / 1000).toFixed(1)}K`,
                             color: lastInvReturn >= investment ? 'text-emerald-400' : 'text-white',
                             bg: 'from-emerald-500/8 to-emerald-500/2',
                           },
                           {
                             icon: <TrendingUp size={16} className="text-blue-400" />,
-                            label: 'Monthly Revenue',
+                            label: 'Monthly Rev',
                             value: `$${(lastMonthRev / 1000).toFixed(1)}K`,
-                            sub: `at month ${simMonth}`,
+                            sub: `month ${simMonth}`,
                             color: 'text-white',
                             bg: 'from-blue-500/8 to-blue-500/2',
                           },
@@ -1133,12 +1136,12 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
                           }
                         ].map((kpi, i) => (
                           <Reveal key={i} delay={i * 60}>
-                            <div className={`bg-gradient-to-br ${kpi.bg} rounded-2xl p-4 border border-white/5 hover:border-white/10 transition-colors`}>
-                              <div className="flex items-center gap-2 mb-2">
+                            <div className={`bg-gradient-to-br ${kpi.bg} rounded-2xl p-3 md:p-4 border border-white/5 hover:border-white/10 transition-colors`}>
+                              <div className="flex items-center gap-1.5 md:gap-2 mb-1.5 md:mb-2">
                                 {kpi.icon}
-                                <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">{kpi.label}</span>
+                                <span className="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-wider font-bold leading-tight">{kpi.label}</span>
                               </div>
-                              <p className={`text-xl md:text-2xl font-bold ${kpi.color}`}>{kpi.value}</p>
+                              <p className={`text-lg md:text-2xl font-bold ${kpi.color}`}>{kpi.value}</p>
                               {'sub' in kpi && kpi.sub && <p className="text-[10px] text-slate-600 mt-0.5">{kpi.sub}</p>}
                             </div>
                           </Reveal>
@@ -1152,16 +1155,16 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
                           <span className="font-semibold">View monthly breakdown</span>
                         </summary>
                         <div className="mt-4 rounded-2xl bg-slate-800/30 border border-slate-700/30 overflow-hidden">
-                          <div className="max-h-64 overflow-y-auto">
-                            <table className="w-full text-xs">
+                          <div className="max-h-64 overflow-y-auto overflow-x-auto">
+                            <table className="w-full text-xs min-w-[480px]">
                               <thead className="sticky top-0 bg-slate-900/95 backdrop-blur-sm">
                                 <tr className="text-slate-500 uppercase tracking-wider">
-                                  <th className="text-left px-4 py-3 font-bold">Month</th>
-                                  <th className="text-right px-4 py-3 font-bold">Monthly Rev</th>
-                                  <th className="text-right px-4 py-3 font-bold">Cum. Revenue</th>
-                                  <th className="text-right px-4 py-3 font-bold">Cum. Profit</th>
-                                  <th className="text-right px-4 py-3 font-bold">Your Return</th>
-                                  <th className="text-right px-4 py-3 font-bold">Status</th>
+                                  <th className="text-left px-3 md:px-4 py-3 font-bold">Mo</th>
+                                  <th className="text-right px-3 md:px-4 py-3 font-bold">Rev/Mo</th>
+                                  <th className="text-right px-3 md:px-4 py-3 font-bold hidden sm:table-cell">Cum. Rev</th>
+                                  <th className="text-right px-3 md:px-4 py-3 font-bold hidden sm:table-cell">Cum. Profit</th>
+                                  <th className="text-right px-3 md:px-4 py-3 font-bold">Return</th>
+                                  <th className="text-right px-3 md:px-4 py-3 font-bold">Status</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -1170,7 +1173,7 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
                                   const recovered = d.investorReturn >= investment;
                                   return (
                                     <tr key={i} className={`border-t border-slate-800/30 ${recovered ? 'bg-emerald-500/3' : ''} hover:bg-white/2 transition-colors`}>
-                                      <td className="px-4 py-2.5 font-semibold text-slate-300">
+                                      <td className="px-3 md:px-4 py-2.5 font-semibold text-slate-300">
                                         <span className="inline-flex items-center gap-1.5">
                                           {d.month}
                                           {d.month === 3 && <span className="text-[8px] px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-400 font-bold">P1</span>}
@@ -1178,10 +1181,10 @@ export default function InvestorPage({ onBack }: { onBack: () => void }) {
                                           {d.month === 12 && <span className="text-[8px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold">P3</span>}
                                         </span>
                                       </td>
-                                      <td className="px-4 py-2.5 text-right text-slate-400">${(monthlyRev / 1000).toFixed(1)}K</td>
-                                      <td className="px-4 py-2.5 text-right font-semibold text-cyan-400">${(d.revenue / 1000).toFixed(1)}K</td>
-                                      <td className="px-4 py-2.5 text-right text-blue-400">${(d.profit / 1000).toFixed(1)}K</td>
-                                      <td className="px-4 py-2.5 text-right font-semibold text-emerald-400">${(d.investorReturn / 1000).toFixed(1)}K</td>
+                                      <td className="px-3 md:px-4 py-2.5 text-right text-slate-400">${(monthlyRev / 1000).toFixed(1)}K</td>
+                                      <td className="px-3 md:px-4 py-2.5 text-right font-semibold text-cyan-400 hidden sm:table-cell">${(d.revenue / 1000).toFixed(1)}K</td>
+                                      <td className="px-3 md:px-4 py-2.5 text-right text-blue-400 hidden sm:table-cell">${(d.profit / 1000).toFixed(1)}K</td>
+                                      <td className="px-3 md:px-4 py-2.5 text-right font-semibold text-emerald-400">${(d.investorReturn / 1000).toFixed(1)}K</td>
                                       <td className="px-4 py-2.5 text-right">
                                         {recovered
                                           ? <span className="text-emerald-400 text-[10px] font-bold">✓ RECOVERED</span>
